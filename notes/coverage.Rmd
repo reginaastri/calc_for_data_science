@@ -1,0 +1,26 @@
+---
+title: "What to Cover"
+author: "W. Bauer"
+date: "01/05/2015"
+output: html_document
+---
+
+The proposed aim is to teach just enough calculus and (finite dimensional) linear algebra for an understanding of quadratic form minimization and of principal components, presupposing only familiarity with R and basic algebra. This objective's modesty is due to the experimental nature of the course, which is twofold. It would be the first "auxiliary" DSS course, supporting the specialization but not actually in it. Also, it could become an introduction or review for a contemplated linear models MOOC.
+
+The contemplated linear models MOOC would evidently cover foundations of machine learning including regularization, (infinite dimensional) Hilbert spaces, reproducing kernels, and representer theorems. The possibility of getting from the modest goals above to these advanced topics should be kept in mind. Perhaps finite dimensional examples, e.g., discrete Fourier transforms or other tensor product constructs, could serve as conceptual introductions. (Brian, do I have this right?)
+
+IMO, swirl's strength is in examples and how to do things, not in abstractions and how to think about things. As such it is a complement to exposition, as are traditional examples and chapter exercises, but swirl brings automation to the party. So, even though it is possible to do symbolic algebra and calculus in R (e.g., through its bindings to Python's sympy package,) it's probably best to stick with numerical calculus, and with vectors and matrices, i.e., with representations rather than vector spaces as algebraic abstractions.
+
+* Vectors and matrices are introduced in R Programming, so we can point to the appropriate lesson there.
+* Matrix multiplication, inversion, and possibly generalized inversion should be covered. Examples of their utility should be given. Solving linear equations, obviously, but also rotations & scaling as a segue to eigenvalue and other decompositions.
+* Matrix norms? Not sure.
+* Quadratic forms follow pretty quickly from matrix multiplication, and squared errors are obvious examples.
+* To minimize quadratic forms via calculus (as opposed to completing squares) partial derivatives are needed, as are illustrations of derivative behavior at extrema.
+* Since partial derivatives are needed, so are derivatives of functions of one variable.
+* Thus we must somehow introduce limits numerically. We should also point out that they needn't exist.
+* So far, we don't actually need integration, but it would be unfair to ignore the fundamental theorem of calculus.
+* What's more, advanced topics will require integration. Introducing inner products and projection, first in terms of sums, then as integrations in some finite dimensional space of functions might work.
+* Eigenvalues and eigenvectors can be introduced in terms of minimizing a quadratic form with a quadratic constraint. This seems appropriate since a course objective involves principal components, but it more or less requires dealing with Lagrange multipliers.
+* Lagrange multipliers, or the behavior of derivatives at constrained extrema, should not be much more difficult to illustrate than the behavior of derivatives at unconstrained extrema. Perhaps they should introduced at the same time.
+* Principal components can be introduced as a example.
+* I think that summarizes technical coverage. Motivating examples, especially at the beginning of the course and when introducing new topics, strike me as important but would flesh out the technical skeleton.

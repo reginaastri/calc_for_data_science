@@ -7,6 +7,6 @@ Maximum likelihood estimation is the obvious point of contact. Its full apprecia
 
 Monte Carlo integration is a second possibility. It is easily demonstrated and comprehended in its simplest form. Monte Carlo Markov chains are its more sophisticated form, and an interesting data science topic in their own right, though they seem a bit far afield in the present context.
 
-More generally, probability and calculus are the two great modeling technologies. Interest in one should breed interest in the other. In their modern forms, both arose in 17^th^ Century Europe, calculus in connection with planetary motion, probability in connection with games of chance. (It was always more down to Earth.) Computers have revolutionized application of both.
+More generally, probability and calculus are the two great modeling technologies. Interest in one should breed interest in the other. In their modern forms, both arose in 17$^{th}$ Century Europe, calculus in connection with planetary motion, probability in connection with games of chance. (It was always more down to Earth.) Computers have revolutionized application of both.
 
 Exactly what can or will be done remains to be seen. In the absence of slides and videos, a short monograph to accompany the swirl lessons is anticipated.
