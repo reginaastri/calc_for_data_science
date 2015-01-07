@@ -1,0 +1,28 @@
+---
+title: 'Lesson Outline'
+author: "W. Bauer"
+date: "01/07/2015"
+output: html_document
+---
+
+Assuming converage will be as summarized in "What to Cover," this is an attempt to outline an order of presentation. Each topic might encompass more than one lesson.
+
+1. Calculus, Vectors, and Matrices -- What are they good for?
+  * Prerequisites: R Programming lessons basic building blocks, vectors and matrices.
+  * Motivating examples, including lines, curves, tangents, lengths, and areas.
+2. Vectors and Matrices with illustrations in the plane
+  * Cartesian coordinates
+  * Rotations and scaling
+  * Matrix multiplication; linearity
+  * Matrix inversion and solving linear equations
+  * Circles and ellipses
+  * Euclidean distance and quadratic forms (with representation as (x-m)'M(x-m) + constant)
+3. Limits and infinitesimals
+4. Slopes and areas, derivatives and integrals
+5. The Fundamental Theorem of Calculus
+6. Partial derivatives and multiple integrals
+7. The behavior of derivatives at extrema
+  * For functions of one variable
+  * For functions of two variables, example of minimizing unconstrained and constrained quadratic forms; Lagrange multipliers
+  * General case: OLS and eigenvalues
+
