@@ -5,24 +5,29 @@ date: "01/07/2015"
 output: html_document
 ---
 
-Assuming converage will be as summarized in "What to Cover," this is an attempt to outline an order of presentation. Each topic might encompass more than one lesson.
+Assuming coverage will be as summarized in "What to Cover," this is an attempt to outline an order of presentation. Each topic might encompass more than one lesson.
+
+NOTE: I've omitted the FFT since it requires complex numbers which are otherwise unnecessary. (Principal components involve positive semidefinite quadratic forms.)
 
 1. Calculus, Vectors, and Matrices -- What are they good for?
   * Prerequisites: R Programming lessons basic building blocks, vectors and matrices.
-  * Motivating examples, including lines, curves, tangents, lengths, and areas.
+  * What are they about? What are they good for? Coin flip and the two great modeling technologies. Models as mimics. Computer revolution. 
+  * Origins: lines, distance, curves, tangents, lengths, and areas in the plane.
 2. Vectors and Matrices with illustrations in the plane
   * Cartesian coordinates
   * Rotations and scaling
   * Matrix multiplication; linearity
-  * Matrix inversion and solving linear equations
+  * Matrix inversion; solving linear equations
   * Circles and ellipses
   * Euclidean distance and quadratic forms (with representation as (x-m)'M(x-m) + constant)
+  * Inner products
 3. Limits and infinitesimals
 4. Slopes and areas, derivatives and integrals
+  * Inner products on finite dimensional function spaces, e.g., polynomials of degree n or less. Means and variances?
 5. The Fundamental Theorem of Calculus
 6. Partial derivatives and multiple integrals
 7. The behavior of derivatives at extrema
   * For functions of one variable
   * For functions of two variables, example of minimizing unconstrained and constrained quadratic forms; Lagrange multipliers
-  * General case: OLS and eigenvalues
+  * General case: OLS and eigenvalues of positive semidefinite forms
 
