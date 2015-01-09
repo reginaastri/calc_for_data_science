@@ -33,6 +33,5 @@ output: html_document
   * [Reference 2](http://nctr.pmel.noaa.gov/tsunami-forecast.html)
   * [Movie](http://nctr.pmel.noaa.gov/animations/sumatraGlobe.mpg)
 
-  
-2.  
+## Origins 
  Origins of lines, distance, curves, tangents, lengths, and areas in the plane.
