@@ -7,7 +7,7 @@ output: html_document
 
 Assuming coverage will be as summarized in "What to Cover," this is an attempt to outline an order of presentation. Each topic might encompass more than one lesson.
 
-NOTE: I've omitted the FFT since it requires complex numbers which are otherwise unnecessary. (Principal components involve positive semidefinite quadratic forms.)
+NOTE: I've omitted the FFT since it requires complex numbers which are otherwise unnecessary. (Principal components involve positive semidefinite matrices and forms.)
 
 1. Calculus, Vectors, and Matrices -- What are they good for?
   * Prerequisites: R Programming lessons basic building blocks, vectors and matrices.

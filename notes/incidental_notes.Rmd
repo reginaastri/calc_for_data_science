@@ -1,0 +1,9 @@
+---
+title: "Incidental Notes"
+author: "W. Bauer"
+date: "01/08/2015"
+output: html_document
+---
+
+[The November, 1st, 1755 Tsunami in Morocco: Can Numerical Modeling Clarify the Uncertainties of Historical Reports? R. Omira, M.A. Baptista, S. Mellas, F. Leone, N. Meschinet de Richemond, B. Zourarah and J-P. Cherel](http://www.intechopen.com/books/tsunami-analysis-of-a-hazard-from-physical-interpretation-to-human-impact/the-november-1st-1755-tsunami-in-morocco-can-numerical-modeling-clarify-the-uncertainties-of-histori)
+
