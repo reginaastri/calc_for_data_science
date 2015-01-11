@@ -19,9 +19,12 @@ output: html_document
   * At very least, basic building blocks, vectors and matrices in R Programming.
   * Will suggest others lesson by lesson.
 4. Why is it interesting?
-  * On December 26, 2004, at approximately 7 AM local time, an undersea earthquake of magnitude 9.0 occurred off the west coast of Sumatra, Indonesia. Five hours later, 237,000 people had been killed by the deadliest tsunami ever recorded.
+  * On December 26, 2004, at approximately 7 AM local time, an undersea earthquake of magnitude 9.0 occurred off the west coast of Sumatra, Indonesia.
+  * ![quake](../images/quake.png)
+  * Five hours later, 237,000 people had been killed by the deadliest tsunami ever recorded.
+  * ![tsunami](../images/tsunami.png) 
   * The disaster prompted a large investment in tsunami detection and forecasting. If a similar event occurred today, a tsunami warning system would predict innundation long before the waves arrived. 
-  * Tsunami forecasts are based on a deterministic model of wave propagation expressed in "differential equations" of calculus.
+  * Tsunami forecasts are based on a deterministic model of wave propagation expressed in "differential equations" of calculus. (The figure is based on such a simulation.)
   * Navier-Stokes equations$$\nabla \cdot \mathbf{u} = 0 $$ $$ \rho \left( \frac{\partial \mathbf{u}}{\partial t} + \mathbf{u} \cdot \nabla \mathbf{u}\right) = -\nabla p + \mu \nabla^2 \mathbf{u} + \mathbf{g}$$
   * In these equations, the terms in bold are vectors. The deltas and nablas (triangles) indicate differentials.
   * "Differentials" refer to instantaneous rates of change in time or slopes in space.
