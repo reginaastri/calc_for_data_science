@@ -5,19 +5,28 @@ date: "01/10/2015"
 output: html_document
 ---
 
-1. Plane geometry is about lines and curves.
+1. The point of this unit (lesson or lessons) is to illustrate the main concepts visually, using plane figures.
+
+2. Plane geometry is about lines and curves. Thanks to René Descartes, 1596-1650, it is also about Cartesian coordinates, which is what the light blue grid lines are about. 
+  * We can specify any point in the plane by its x and y coordinates. The circle's center, for instance, has x coordinate 8 and y coordinate 6. One end of the line is at x=1 and y=6, the other at x=5, y=9. 
+  * Using `points(x, y, pch=19, cex=3, col="green")` put a fat, green point at coordinates, x and y, of your choice; just be sure both x and y are between 0 and 10 so your point appears on the graph.
+  * Thus, any point in the plane can be represented by a vector of 2 numbers. In R we'd represent the circle's center as `c(8,6)` and the endpoints of the line as `c(1,6)` and `c(5, )`.
+
 ```{r echo=FALSE, fig.show='hold'}
 plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves")
 abline(h=0:10, col="lightblue", lwd=2)
 abline(v=0:10, col="lightblue", lwd=2)
 segments(1,6,5,9, lwd=3)
 points(c(1,5),c(6,9), pch=19, cex=1.5)
+points(5, 9, pch=19, cex=1.5)
 points(8,6,cex=25,lwd=3)
+points(8,6, pch=19, cex=1.5, col=2)
 x <- seq(-1, 11, by=.5)
 lines(x, 1+sin(.2*pi*x), lwd=3)
 ```
 
-2. Lines have length and slopes.
+3. A line has a length and a slope. Thanks to Pythagoras, we can calculate the length of a line segment
+
 ```{r echo=FALSE, fig.show='hold'}
 plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Line segments have slopes and lengths.")
 abline(h=0:10, col="lightblue", lwd=2)
@@ -29,9 +38,9 @@ segments(5,6,5,9, lty=2, lwd=3, col=2)
 text(3.25, 5.5, expression(4), lwd=3, cex=1.5, col=2)
 text(5.25, 7.5, expression(3), lwd=3, cex=1.5, col=2)
 text(2.5, 8.5, expression(sqrt(4^2 + 3^2)), lwd=3, cex=1.5, col=1)
-text(1.3, 8.5, "length = ", lwd=3, cex=1.5, col=1)
+text(1.1, 8.5, "length = ", lwd=3, cex=1.5, col=1)
 text(5.75, 5, expression(frac(3,4)), lwd=3, cex=1.5, col=2)
-text(5, 5, "slope = ", lwd=3, cex=1.5, col=2)
+text(4.8, 5, "slope = ", lwd=3, cex=1.5, col=2)
 ```
 
 3. The closer you look at a smooth curve, the more it looks like a line.
