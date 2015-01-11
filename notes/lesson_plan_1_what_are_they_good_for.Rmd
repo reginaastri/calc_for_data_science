@@ -5,15 +5,13 @@ date: "01/08/2015"
 output: html_document
 ---
 
-### Introduction
-
 1. Calculus and Linear Algebra for Data Science--What is it about?
   * Calculus is one the two great modeling technologies. The other is probability and statistics. In theory and practice, both depend on linear algebra.
   * If you flip a coin in the air, calculus can tell you its ultimate height and the time it will remain in the air. Probability can tell you the chance of its landing on heads.
   * In their modern forms, both calculus and probability arose in 17$^{th}$ Century Europe, calculus in connection with planetary motion, probability in connection with games of chance. (It was always more down to Earth.) 
   * Computers have revolutionized application of both. Linear algebra has been essential to that revolution.
 2. Who is this course for?
-  * Conceived as a bridge between DSS and advanced topics in linear models and machine learning.
+  * It's a primer, conceived as a bridge between DSS and advanced topics in linear models and machine learning.
   * Should provide sufficient introduction or refresher in calculus and linear algebra for an understanding of ordinary least squares modeling and principal component analysis.
   * Emphasis is computational, not symbolic. Concepts, yes, but programs will do the work. It is no substitute for a traditional course, but may serve to complement one.
 3. What are its prerequisites? 
@@ -28,10 +26,7 @@ output: html_document
   * In these equations, the terms in bold are vectors. The deltas and nablas (triangles) indicate differentials.
   * "Differentials" refer to instantaneous rates of change in time or slopes in space.
   * To model the progress of a wave, the differentials must be added up, or "integrated" in time and space.
-  * Integrating takes a great deal of computation, and many tricks must be used to make forecasts timely and accurate. A decent system is in place. Research is ongoing.
+  * Integrating these equations takes a great deal of computation, and many tricks must be used to make forecasts timely and accurate. A decent system is in place. Research is ongoing.
   * [Reference 1](http://en.wikipedia.org/wiki/2004_Indian_Ocean_earthquake_and_tsunami) 
   * [Reference 2](http://nctr.pmel.noaa.gov/tsunami-forecast.html)
   * [Movie](http://nctr.pmel.noaa.gov/animations/sumatraGlobe.mpg)
-
-## Origins 
- Origins of lines, distance, curves, tangents, lengths, and areas in the plane.
