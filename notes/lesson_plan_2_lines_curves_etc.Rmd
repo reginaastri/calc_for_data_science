@@ -25,7 +25,11 @@ x <- seq(-1, 11, by=.5)
 lines(x, 1+sin(.2*pi*x), lwd=3)
 ```
 
-3. A line has a length and a slope. Thanks to Pythagoras, we can calculate the length of a line segment
+3. A line has a slope and a length. 
+  * A line's slope is the simplest example of a *derivative*. In the figure, if x increases by 1, then y increases by 3/4. We say that 3/4 is the rate of change of y with respect to x, or the derivative of y with respect to x.
+  * According to Pythagoras, "The square on the hypotenuse, is equal to the sum of the squares on its other two sides." Thus we can calculate the length of a line from the coordinates of its endpoints.
+  * The square on the hypotenuse, $3^2+4^2$ in the figure, the simplest example of a *quadratic form*. It is called *quadratic* because of the squares, and *form*, is short for formula.
+  * The line's length, of course, is the square root of the quadratic form.
 
 ```{r echo=FALSE, fig.show='hold'}
 plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Line segments have slopes and lengths.")
@@ -44,3 +48,27 @@ text(4.8, 5, "slope = ", lwd=3, cex=1.5, col=2)
 ```
 
 3. The closer you look at a smooth curve, the more it looks like a line.
+  * In the figure, we're zooming in on the x axis around the coordinate x=1.
+  * In the upper left we're looking at the interval between x=0 and x=2. In the upper right we zoom in to an interval 5 times smaller, and so on. By the time we're at an interval 50 times smaller, the line and the curve are indistiguishable by eye.
+  * By a process such at this, we can assign a slope to a point on a curve. Such a slope is called the derivative of the curve and written $\frac{dy}{dx}$.
+
+```{r echo=FALSE, fig.show='hold'}
+local({
+  mags <- c(1, 5, 10, 50)
+   par(mfrow=c(2, 2))
+ for(i in mags){
+    x0 <- 1
+    y0 <- x0^2
+    x <- seq(x0 - 1/i, x0 + 1/i, length.out=50)
+    y <- x^2
+    plot(x, y, type='n', xlab=expression(x), ylab=expression(y), 
+         main=paste0("Zoom = ", i*100,"%"))
+    lines(x, y, lwd=3)
+    points(x0, y0, pch=19, cex=1.5, col="red")
+    abline(x0^2-2*x0*x0, 2*x0, lwd=3, lty=2, col="red")
+  }
+ par(mfrow=c(1,1))
+})
+
+```
+
