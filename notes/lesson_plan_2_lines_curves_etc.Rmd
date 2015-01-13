@@ -10,24 +10,26 @@ output: html_document
 2. Plane geometry is about lines and curves. Thanks to René Descartes, 1596-1650, it is also about Cartesian coordinates, which is what the light blue grid lines are about. 
   * We can specify any point in the plane by its x and y coordinates. The circle's center, for instance, has x coordinate 8 and y coordinate 6. One end of the line is at x=1 and y=6, the other at x=5, y=9. 
   * Using `points(x, y, pch=19, cex=3, col="green")` put a fat, green point at coordinates, x and y, of your choice; just be sure both x and y are between 0 and 10 so your point appears on the graph.
-  * Thus, any point in the plane can be represented by a vector of 2 numbers. In R we'd represent the circle's center as `c(8,6)` and the endpoints of the line as `c(1,6)` and `c(5, )`.
+  * Thus, any point in the plane can be represented by a vector of 2 numbers. In R we'd represent the circle's center as `c(8,6)` and the endpoints of the line as `c(1,6)` and `c(5,9)`.
 
 ```{r echo=FALSE, fig.show='hold'}
-plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves")
-abline(h=0:10, col="lightblue", lwd=2)
-abline(v=0:10, col="lightblue", lwd=2)
-segments(1,6,5,9, lwd=3)
-points(c(1,5),c(6,9), pch=19, cex=1.5)
-points(5, 9, pch=19, cex=1.5)
-points(8,6,cex=25,lwd=3)
-points(8,6, pch=19, cex=1.5, col=2)
-x <- seq(-1, 11, by=.5)
-lines(x, 1+sin(.2*pi*x), lwd=3)
+local({
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves")
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  segments(1,6,5,9, lwd=3)
+  points(c(1,5),c(6,9), pch=19, cex=1.5)
+  points(5, 9, pch=19, cex=1.5)
+  points(8,6,cex=25,lwd=3)
+  points(8,6, pch=19, cex=1.5, col=2)
+  x <- seq(-1, 11, by=.25)
+  lines(x, 2+2*sin(.2*pi*x), lwd=3)
+})
 ```
 
 3. A line has a slope and a length. 
-  * A line's slope is the simplest example of a *derivative*. In the figure, if x increases by 1, then y increases by 3/4. We say that 3/4 is the rate of change of y with respect to x, or the derivative of y with respect to x.
-  * According to Pythagoras, "The square on the hypotenuse, is equal to the sum of the squares on its other two sides." Thus we can calculate the length of a line from the coordinates of its endpoints.
+  * A line's slope is the simplest example of a *derivative*. In the figure, if x increases by 1, then y increases by 3/4. We say that 3/4 is the rate of change of y with respect to x, or the *derivative* of y with respect to x.
+  * According to Pythagoras, "The square on the hypotenuse of a right triangle is equal to the sum of the squares on its other two sides." Thus we can calculate the length of a line from the coordinates of its endpoints.
   * The square on the hypotenuse, $3^2+4^2$ in the figure, the simplest example of a *quadratic form*. It is called *quadratic* because of the squares, and *form*, is short for formula.
   * The line's length, of course, is the square root of the quadratic form.
 
@@ -41,34 +43,79 @@ segments(1,6,5,6, lty=2, lwd=3, col=2)
 segments(5,6,5,9, lty=2, lwd=3, col=2)
 text(3.25, 5.5, expression(4), lwd=3, cex=1.5, col=2)
 text(5.25, 7.5, expression(3), lwd=3, cex=1.5, col=2)
-text(2.5, 8.5, expression(sqrt(4^2 + 3^2)), lwd=3, cex=1.5, col=1)
-text(1.1, 8.5, "length = ", lwd=3, cex=1.5, col=1)
-text(5.75, 5, expression(frac(3,4)), lwd=3, cex=1.5, col=2)
-text(4.8, 5, "slope = ", lwd=3, cex=1.5, col=2)
+text(2.25, 8.5, expression(length == sqrt(4^2 + 3^2)), lwd=3, cex=1.5, col=1)
+text(5.75, 5, expression(slope == frac(3,4)), lwd=3, cex=1.5, col=2)
 ```
 
 3. The closer you look at a smooth curve, the more it looks like a line.
-  * In the figure, we're zooming in on the x axis around the coordinate x=1.
-  * In the upper left we're looking at the interval between x=0 and x=2. In the upper right we zoom in to an interval 5 times smaller, and so on. By the time we're at an interval 50 times smaller, the line and the curve are indistiguishable by eye.
-  * By a process such at this, we can assign a slope to a point on a curve. Such a slope is called the derivative of the curve and written $\frac{dy}{dx}$.
+  * In the figure, we're zooming in on the green box.
+  * In the upper left we're looking at the curve with no magnification. The green box is barely visible. At 5X magnification, the green box is visible. At 50X magnification, the line and the curve are indistiguishable by eye.
+  * By a process such at this, we can assign a slope to any point on a smooth curve. Such a slope is called the derivative of the curve and is usually written dy/dx.
+  * The notation dy/dx is loosely understood as a ratio of "infinitesimals." Loosely speaking, it is the ratio of an infinitesimally small change in y to a corresponding infinitesimally small change in x.
 
 ```{r echo=FALSE, fig.show='hold'}
+
+f <- function(x)2+2*sin(.2*pi*x)
+df_dx <- function(x).4*pi*cos(.2*pi*x)
+tngt <- function(x, interval=16, col="red"){
+  slope = df_dx(x)
+  y <- f(x)
+  xa <- x-interval/2
+  ya <- y - slope*interval/2
+  xb <- x+interval/2
+  yb <- y + slope*interval/2
+  segments(xa, ya, xb, yb, lty=2, lwd=4, col=col)
+}
+
 local({
-  mags <- c(1, 5, 10, 50)
-   par(mfrow=c(2, 2))
- for(i in mags){
-    x0 <- 1
-    y0 <- x0^2
-    x <- seq(x0 - 1/i, x0 + 1/i, length.out=50)
-    y <- x^2
-    plot(x, y, type='n', xlab=expression(x), ylab=expression(y), 
-         main=paste0("Zoom = ", i*100,"%"))
+  
+  drawbox <- function(xa, ya, xb, yb, col="green"){
+    lines(c(xa, xb, xb, xa, xa), c(ya, ya, yb, yb, ya), lwd=3, col=col)
+  }
+    
+  par(mfrow=c(2, 2))
+  mags <- c(1, 5, 25, 50)
+  minscale <- mags[length(mags)]
+  x0 <- 3.5
+  y0 <- f(x0) 
+  xa <- x0 - (x0+1)/minscale
+  xb <- x0 + (10-x0)/minscale
+    
+  for(i in mags){
+    x <- seq(x0 - (x0+1)/i, x0 + (11-x0)/i, length.out=50)
+    y <- f(x)
+    plot(x, y, type='n', xlab="x", ylab="y", main=paste0(i, "X") )
+    abline(h=0:10, col="lightblue", lwd=2)
+    abline(v=0:10, col="lightblue", lwd=2)
     lines(x, y, lwd=3)
     points(x0, y0, pch=19, cex=1.5, col="red")
-    abline(x0^2-2*x0*x0, 2*x0, lwd=3, lty=2, col="red")
+    tngt(x0)
+    drawbox(xa, f(xa), xb, f(xb))
   }
  par(mfrow=c(1,1))
 })
 
 ```
 
+4. The slope, or derivative, of a curve depends on the position at which it is estimated. 
+  * In the figure, the curve's derivative goes from positive (upward sloping,) to negative and back to positive as the x coordinate varies from 0 to 10.
+  * When the derivative of a curve is positive, y is increasing as x increases. When the derivative is negative, y is decreasing as x increases.
+  * The blue points are at a maximum (y=4) and a minimum (y=0) of the curve. What is the derivative of the curve at those points?
+  * The derivative is always zero at a point where it stops increasing and starts decreasing, or when it stops decreasing and starts increasing. In other words, as the derivative changes sign it passes through zero.
+
+```{r echo=FALSE, fig.show='hold'}
+local({
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="The derivative of a curve varies.\nAt maximums and minimums, the derivative is zero.")
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  x <- seq(-1, 11, by=.25)
+  lines(x, 2+2*sin(.2*pi*x), lwd=3)
+  pts <- c(1, 1/.4, 5, 3/.4, 10/.4)
+  tngt(pts[1],interval=3)
+  tngt(pts[2], interval=3, col="blue")
+  tngt(pts[3], interval=3)
+  tngt(pts[4], interval=3, col="blue")
+  tngt(pts[5], interval=3)
+  points(pts, f(pts), pch=19, cex=1.5, col=c(2,4,2,4,2))
+})
+```
