@@ -119,3 +119,29 @@ local({
   points(pts, f(pts), pch=19, cex=1.5, col=c(2,4,2,4,2))
 })
 ```
+
+5. Review. Examples of the following have been introduced
+  * Cartesian coordinates
+  * Quadratic forms
+  * Derivatives
+  * The behavior of derivatives at extrema
+
+6. Curves define areas
+
+```{r echo=FALSE, fig.show='hold'}
+local({
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves")
+  points(8,6,cex=25,lwd=3, pch=21, bg="lightyellow")
+  x <- seq(-1, 11, length.out=50)
+  y <- 2+2*sin(.2*pi*x)
+  for(i in 1:(length(x)-1)){
+    polygon(c(x[i],x[i],x[i+1], x[i+1]), c(0,y[i], y[i+1], 0), col="lightyellow", border="lightyellow")
+  }
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  points(8,6,cex=25,lwd=3)
+  points(8,6, pch=19, cex=1.5, col=2)
+  lines(x, y, lwd=3)
+  abline(h=0, lwd=3)
+})
+```
