@@ -13,19 +13,48 @@ output: html_document
   * Thus, any point in the plane can be represented by a vector of 2 numbers. In R we'd represent the circle's center as `c(8,6)` and the endpoints of the line as `c(1,6)` and `c(5,9)`.
 
 ```{r echo=FALSE, fig.show='hold'}
+
+circle <- function(x, y, r, ...){
+  theta <- seq(0, 2*pi, length.out = 51)
+  polygon(x+r*cos(theta), y+r*sin(theta), ...)
+}
+
+# compute margins which make plot window square
+adj_margins <- function(){
+    fin <- par("fin") # (window in inches)
+    mai <- par("mai") # (margins in inches)
+    # We want fin[1]-(mai[2]+mai[4]) == fin[2] - (mai[1]+mai[3])
+    w <- fin[1]-(mai[2]+mai[4]) # plot window width
+    h <- fin[2]-(mai[1]+mai[3]) # plot window height
+    # We'll preserve the smallest of these two dimensions
+    if(w > h){
+      delta <- (w-h)/2
+      mai[c(2,4)] <- mai[c(2,4)] + delta
+    } else {
+      delta <- (h-w)/2
+      mai[c(1,3)] <- mai[c(1,3)] + delta
+    }
+    mai
+}
+
 local({
-  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves")
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves", xlim=c(0,10), ylim=c(0,10), asp=1)
   abline(h=0:10, col="lightblue", lwd=2)
   abline(v=0:10, col="lightblue", lwd=2)
   segments(1,6,5,9, lwd=3)
   points(c(1,5),c(6,9), pch=19, cex=1.5)
   points(5, 9, pch=19, cex=1.5)
-  points(8,6,cex=25,lwd=3)
+  circle(8,6,2, lwd=3) # points(8,6,cex=25,lwd=3)
   points(8,6, pch=19, cex=1.5, col=2)
   x <- seq(-1, 11, by=.25)
   lines(x, 2+2*sin(.2*pi*x), lwd=3)
+  par(mai=mai)
 })
 ```
+
+#### Derivatives
 
 3. A line has a slope and a length. 
   * A line's slope is the simplest example of a *derivative*. In the figure, if x increases by 1, then y increases by 3/4. We say that 3/4 is the rate of change of y with respect to x, or the *derivative* of y with respect to x.
@@ -34,17 +63,22 @@ local({
   * The line's length, of course, is the square root of the quadratic form.
 
 ```{r echo=FALSE, fig.show='hold'}
-plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Line segments have slopes and lengths.")
-abline(h=0:10, col="lightblue", lwd=2)
-abline(v=0:10, col="lightblue", lwd=2)
-segments(1,6,5,9, lwd=3)
-points(c(1,5),c(6,9), pch=19, cex=1.5)
-segments(1,6,5,6, lty=2, lwd=3, col=2)
-segments(5,6,5,9, lty=2, lwd=3, col=2)
-text(3.25, 5.5, expression(4), lwd=3, cex=1.5, col=2)
-text(5.25, 7.5, expression(3), lwd=3, cex=1.5, col=2)
-text(2.25, 8.5, expression(length == sqrt(4^2 + 3^2)), lwd=3, cex=1.5, col=1)
-text(5.75, 5, expression(slope == frac(3,4)), lwd=3, cex=1.5, col=2)
+local({
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Line segments have slopes and lengths.", asp=1)
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  segments(1,6,5,9, lwd=3)
+  points(c(1,5),c(6,9), pch=19, cex=1.5)
+  segments(1,6,5,6, lty=2, lwd=3, col=2)
+  segments(5,6,5,9, lty=2, lwd=3, col=2)
+  text(3.25, 5.5, expression(4), lwd=3, cex=1, col=2)
+  text(5.25, 7.5, expression(3), lwd=3, cex=1, col=2)
+  text(2.5, 8, expression(length == sqrt(4^2 + 3^2)), lwd=3, cex=1, col=1, srt=atan(3/4)*180/pi)
+  text(5.75, 5, expression(slope == frac(3,4)), lwd=3, cex=1, col=2)
+  par(mai=mai)
+})
 ```
 
 3. The closer you look at a smooth curve, the more it looks like a line.
@@ -73,18 +107,17 @@ local({
     lines(c(xa, xb, xb, xa, xa), c(ya, ya, yb, yb, ya), lwd=3, col=col)
   }
     
-  par(mfrow=c(2, 2))
   mags <- c(1, 5, 25, 50)
   minscale <- mags[length(mags)]
   x0 <- 3.5
   y0 <- f(x0) 
   xa <- x0 - (x0+1)/minscale
   xb <- x0 + (10-x0)/minscale
-    
+  par(mfrow=c(2, 2))
   for(i in mags){
     x <- seq(x0 - (x0+1)/i, x0 + (11-x0)/i, length.out=50)
     y <- f(x)
-    plot(x, y, type='n', xlab="x", ylab="y", main=paste0(i, "X") )
+    plot(x, y, type='n', xlab="x", ylab="y", main=paste0(i, "X"), asp=1 )
     abline(h=0:10, col="lightblue", lwd=2)
     abline(v=0:10, col="lightblue", lwd=2)
     lines(x, y, lwd=3)
@@ -92,7 +125,7 @@ local({
     tngt(x0)
     drawbox(xa, f(xa), xb, f(xb))
   }
- par(mfrow=c(1,1))
+  par(mfrow=c(1,1))
 })
 
 ```
@@ -105,18 +138,21 @@ local({
 
 ```{r echo=FALSE, fig.show='hold'}
 local({
+  mai <- par("mai")
+  par(mai=adj_margins())
   plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="The derivative of a curve varies.\nAt maximums and minimums, the derivative is zero.")
   abline(h=0:10, col="lightblue", lwd=2)
   abline(v=0:10, col="lightblue", lwd=2)
   x <- seq(-1, 11, by=.25)
   lines(x, 2+2*sin(.2*pi*x), lwd=3)
-  pts <- c(1, 1/.4, 5, 3/.4, 10/.4)
+  pts <- c(0, 1/.4, 5, 3/.4, 10)
   tngt(pts[1],interval=3)
   tngt(pts[2], interval=3, col="blue")
   tngt(pts[3], interval=3)
   tngt(pts[4], interval=3, col="blue")
   tngt(pts[5], interval=3)
   points(pts, f(pts), pch=19, cex=1.5, col=c(2,4,2,4,2))
+  par(mai=mai)
 })
 ```
 
@@ -126,12 +162,18 @@ local({
   * Derivatives
   * The behavior of derivatives at extrema
 
-6. Curves define areas
+#### Integrals
+
+6. Curves also have areas. 
+  * The circle's area is that enclosed by the circle. 
+  * The curve's area is that between the curve itself and the x axis.
 
 ```{r echo=FALSE, fig.show='hold'}
 local({
-  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves")
-  points(8,6,cex=25,lwd=3, pch=21, bg="lightyellow")
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Areas in and under curves", asp=1)
+  circle(8,6,2,col="lightyellow")
   x <- seq(-1, 11, length.out=50)
   y <- 2+2*sin(.2*pi*x)
   for(i in 1:(length(x)-1)){
@@ -139,9 +181,172 @@ local({
   }
   abline(h=0:10, col="lightblue", lwd=2)
   abline(v=0:10, col="lightblue", lwd=2)
-  points(8,6,cex=25,lwd=3)
+  circle(8,6,r=2,lwd=3)
   points(8,6, pch=19, cex=1.5, col=2)
   lines(x, y, lwd=3)
   abline(h=0, lwd=3)
+  par(mai=mai)
+})
+```
+
+7. Counting boxes
+  * To estimate either area, you could count the number of boxes it takes to contain them.
+  * How many boxes does it take to contain the circle? (16)
+  * So we know the circle's area is less than 16.
+
+```{r echo=FALSE, fig.show='hold'}
+
+show_boxes<- function(side, xc, yc, r, col="lightpink"){
+  x <- c(0, side, side, 0, 0)
+  y <- c(0, 0, side, side, 0)
+  for(x0 in seq(xc-r, xc-side, by=side)){
+    for(y0 in seq(yc-r, yc-side, by=side)){
+      if( (x0+side-xc)^2 + (y0+side-yc)^2 < r^2){
+        polygon(x+x0, y+y0, col=col)
+        polygon(2*xc-(x+x0), y+y0, col=col)
+        polygon(x+x0, 2*yc-(y+y0), col=col)
+        polygon(2*xc-(x+x0), 2*yc-(y+y0), col=col)
+      }
+    }
+  }
+}
+
+local({
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Estimating area", asp=1)
+  show_boxes(1, 8, 6, 2)
+  x <- seq(-1, 11, length.out=50)
+  y <- 2+2*sin(.2*pi*x)
+  for(i in 1:(length(x)-1)){
+    polygon(c(x[i],x[i],x[i+1], x[i+1]), c(0,y[i], y[i+1], 0), col="lightyellow", border="lightyellow")
+  }
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  circle(8,6,r=2,lwd=3)
+  points(8,6, pch=19, cex=1.5, col=2)
+  lines(x, y, lwd=3)
+  abline(h=0, lwd=3)
+  par(mai=mai)
+})
+```
+
+
+7. Or you could make the boxes smaller, say 1/4 by 1/4.
+  * Now each box has area 1/16.
+  * It takes about 216 smaller boxes to cover the square, giving an area of 216/16 = 13.5.
+  * Since the circle has radius 2, we know the area is $\pi r^2 = 12.6$, so we're getting closer.
+  * You could continue this indefinitely, and get better and better estimates.
+  * We say the area of the circle is the *limit* of this process.
+  * This is the idea behind integration.
+
+```{r echo=FALSE, fig.show='hold'}
+local({
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Smaller boxes give better estimates", asp=1)
+  show_boxes(1/4, 8, 6, 2)
+  x <- seq(-1, 11, length.out=50)
+  y <- 2+2*sin(.2*pi*x)
+  for(i in 1:(length(x)-1)){
+    polygon(c(x[i],x[i],x[i+1], x[i+1]), c(0,y[i], y[i+1], 0), col="lightyellow", border="lightyellow")
+  }
+  abline(h=seq(0,10,by=.25), col="lightblue", lwd=2)
+  abline(v=seq(0,10,by=.25), col="lightblue", lwd=2)
+  circle(8,6,2,lwd=3)
+  points(8,6, pch=19, cex=1.5, col=2)
+  lines(x, y, lwd=3)
+  abline(h=0, lwd=3)
+  par(mai=mai)
+})
+```
+
+8. The area under a curve between two points on the x axis, such as x=0 and x=4 in the figure, is known as a *definite* integral, and is written as shown above the area (pink) it represents.
+  * The curve itself is denoted y(x), meaning the value of y at x, e.g., y(0)=2.
+  * As with derivatives, dx represents an infinitesimal difference in x.
+
+```{r echo=FALSE, fig.align='center', fig.show='hold'}
+
+local({
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Definite integral", asp=1)
+  x <- seq(-1, 11, by=0.2)
+  y <- 2+2*sin(.2*pi*x)
+  for(i in 1:length(x)){
+    col <- "lightyellow"
+    if(x[i] >= 0 & x[i] < 4)col="lightpink"
+    polygon(c(x[i],x[i],x[i+1], x[i+1]), c(0,y[i], y[i+1], 0), col=col, border=col)
+  }
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  lines(x, y, lwd=3)
+  abline(h=0, lwd=3)
+  text(2, 5.5, expression(integral(y(x)*dx,0,4)), cex=1.5)
+  par(mai=mai)
+})
+```
+
+9. The definite integral can be approximated in the same general way as the area of circle.
+  * In the figure, we approximate the definite integral by rectangles.
+  * The rectangles are as wide as the grid points and as high as y(x), where x=0, 1, 2, 3.
+  * The total area covered by the rectangles is $y(0) \cdot 1 + y(1) \cdot 1 + y(2) \cdot 1 + y(3) \cdot 1.$
+  * A smaller grid would give a better approximation to the area.
+  * The definite integral is the *limit* of such sums as the width of the rectangles, $Delta x$ approaches zero.
+
+```{r echo=FALSE, fig.align='center', fig.show='hold'}
+
+local({
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Definite integral approximated\nby areas of rectangles", asp=1)
+  x <- seq(-1, 11, by=0.2)
+  y <- 2+2*sin(.2*pi*x)
+  col <- "lightyellow"
+  for(i in 1:(length(x)-1)){
+    polygon(c(x[i],x[i],x[i+1], x[i+1]), c(0,y[i], y[i+1], 0), col=col, border=col)
+  }
+  x1 <- seq(0, 4, by=1)
+  y1 <- 2 + 2*sin(.2*pi*x1)
+  col <- "lightpink"
+  for(i in 1:(length(x1)-1)){
+    polygon(c(x1[i],x1[i],x1[i+1], x1[i+1]), c(0,y1[i], y1[i], 0), col=col, border=col)
+  }
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  lines(x, y, lwd=3)
+  abline(h=0, lwd=3)
+  text(2, 5.5, expression(sum(y(x)*Delta*x,0,4)), cex=1.5)
+  par(mai=mai)
+})
+```
+
+10. A smaller grid would give a better approximation to the area. The definite integral is the *limit* of such sums as the width of the rectangles, $Delta x$ approaches zero.
+
+```{r echo=FALSE, fig.align='center', fig.show='hold'}
+
+local({
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Definite integral\nas a limit", asp=1)
+  x <- seq(-1, 11, by=0.2)
+  y <- 2+2*sin(.2*pi*x)
+  col <- "lightyellow"
+  for(i in 1:(length(x)-1)){
+    polygon(c(x[i],x[i],x[i+1], x[i+1]), c(0,y[i], y[i+1], 0), col=col, border=col)
+  }
+  x1 <- seq(0, 4, by=0.5)
+  y1 <- 2 + 2*sin(.2*pi*x1)
+  col <- "lightpink"
+  for(i in 1:(length(x1)-1)){
+    polygon(c(x1[i],x1[i],x1[i+1], x1[i+1]), c(0,y1[i], y1[i], 0), col=col, border=col)
+  }
+  abline(h=seq(0,10, by=.5), col="lightblue", lwd=2)
+  abline(v=seq(0, 10, by=.5), col="lightblue", lwd=2)
+  lines(x, y, lwd=3)
+  abline(h=0, lwd=3)
+  text(5, 5.5, 
+       expression(integral(y(x)*dx,0,4) == lim(sum(y(x)*Delta*x,0,4), Delta*x %->% 0)), cex=1.25)
+  par(mai=mai)
 })
 ```
