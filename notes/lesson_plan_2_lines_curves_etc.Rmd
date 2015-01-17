@@ -13,14 +13,21 @@ output: html_document
   * Thus, any point in the plane can be represented by a vector of 2 numbers. In R we'd represent the circle's center as `c(8,6)` and the endpoints of the line as `c(1,6)` and `c(5,9)`.
 
 ```{r echo=FALSE, fig.show='hold'}
+
+circle <- function(x, y, r, n=50, ...){
+  theta <- seq(0, 2*pi, length.out = n+1)
+  polygon(x+r*cos(theta), y+r*sin(theta), ...)
+}
+
 local({
-  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves")
+  # fin (window in inches), mai (margin in inches)
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="Lines and curves", xlim=c(0,10), ylim=c(0,10), asp=1)
   abline(h=0:10, col="lightblue", lwd=2)
   abline(v=0:10, col="lightblue", lwd=2)
   segments(1,6,5,9, lwd=3)
   points(c(1,5),c(6,9), pch=19, cex=1.5)
   points(5, 9, pch=19, cex=1.5)
-  points(8,6,cex=25,lwd=3)
+  circle(8,6,1.5, lwd=3) # points(8,6,cex=25,lwd=3)
   points(8,6, pch=19, cex=1.5, col=2)
   x <- seq(-1, 11, by=.25)
   lines(x, 2+2*sin(.2*pi*x), lwd=3)
