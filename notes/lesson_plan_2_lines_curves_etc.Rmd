@@ -322,7 +322,7 @@ local({
 })
 ```
 
-10. A smaller grid would give a better approximation to the area. The definite integral is the *limit* of such sums as the width of the rectangles, $Delta x$ approaches zero.
+10. A smaller grid would give a better approximation to the area. The definite integral is the *limit* of such sums as the width of the rectangles, $\Delta x$ approaches zero.
 
 ```{r echo=FALSE, fig.align='center', fig.show='hold'}
 
