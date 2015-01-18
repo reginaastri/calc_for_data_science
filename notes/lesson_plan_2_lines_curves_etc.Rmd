@@ -5,7 +5,7 @@ date: "01/10/2015"
 output: html_document
 ---
 
-1. The point of this unit (lesson or lessons) is to illustrate the main concepts visually, using plane figures.
+1. The point of this unit (lesson or lessons) is to illustrate the basic concepts of calculus visually, using plane figures.
 
 2. Plane geometry is about lines and curves. Thanks to René Descartes, 1596-1650, it is also about Cartesian coordinates, which is what the light blue grid lines are about. 
   * We can specify any point in the plane by its x and y coordinates. The circle's center, for instance, has x coordinate 8 and y coordinate 6. One end of the line is at x=1 and y=6, the other at x=5, y=9. 
@@ -262,8 +262,9 @@ local({
 ```
 
 8. The area under a curve between two points on the x axis, such as x=0 and x=4 in the figure, is known as a *definite* integral, and is written as shown above the area (pink) it represents.
-  * The curve itself is denoted y(x), meaning the value of y at x, e.g., y(0)=2.
   * As with derivatives, dx represents an infinitesimal difference in x.
+  * The curve itself is denoted y(x), meaning the value of y at x, e.g., y(0)=2.
+  * This kind of curve, which has exactly one y coordinate for every x coordinate, is generally called a *function*. We say y is a function of x. From now on, we'll use the word, function, for this kind of curve.
 
 ```{r echo=FALSE, fig.align='center', fig.show='hold'}
 
@@ -292,7 +293,7 @@ local({
   * The rectangles are as wide as the grid points and as high as y(x), where x=0, 1, 2, 3.
   * The total area covered by the rectangles is $y(0) \cdot 1 + y(1) \cdot 1 + y(2) \cdot 1 + y(3) \cdot 1.$
   * A smaller grid would give a better approximation to the area.
-  * The definite integral is the *limit* of such sums as the width of the rectangles, $Delta x$ approaches zero.
+  * The definite integral is the *limit* of such sums as the width of the rectangles, $\Delta x$ approaches zero.
 
 ```{r echo=FALSE, fig.align='center', fig.show='hold'}
 
@@ -350,3 +351,62 @@ local({
   par(mai=mai)
 })
 ```
+
+#### The Fundamental Theorem of Calculus.
+
+11. The *Fundamental Theorem of Calculus* is that differentiation and integration are inverse operations. Loosely speaking, both the derivative of the integral and the integral of the derivative give back the function itself.
+  * A more precise statement is shown in the figure.
+  * The rate of change of a definite integral with respect to its upper endpoint, t, is the function itself, y, evaluated at t.
+  * The definite integral of the derivative of a function is the difference, y(t)-y(a), between the function evaluated at the endpoints of the integral.
+
+```{r echo=FALSE, fig.align='center', fig.show='hold'}
+local({
+  plot(0:10, 0:10, type='n', ann=FALSE, xaxt="n", yaxt="n")
+  title("The Fundamental Theorem of Calculus")
+  text(2, 7, expression(a:~~~~frac(d, dt)*integral(y(x)*dx, a, t)==y(t)), cex=2, pos=4)
+  text(2, 3, expression(b:~~~~integral(frac(dy,dx)(x)*dx, a, t)==y(t)-y(a)), cex=2, pos=4)
+})
+```
+
+12. The emphasis in this swirl lesson is visual and intuitive, so we won't present an algebraic proof of the Fundamental Theorem here. (We may present it later in the course in an accompanying monograph.) However, the idea is fairly easy to grasp.
+  * The figure shows a small increment of area added to the definite integral of y(x).
+  * The area added is a rectangle $\Delta x$ wide and y(4) high.
+  * To estimate the rate of change in area due to a small change, $\Delta x$, in x, we divided this area by $\Delta x$ to get y(4).
+  * This indicates how part a of the Fundamental Theorem is proved.
+  * Part b is similarly intuitive. Loosely speaking, the dx's under the integral sign "divide out," leaving incremental changes, dy, in y, to be added up. They add up to the difference between the starting point and the ending point.
+
+```{r echo=FALSE, fig.align='center', fig.show='hold'}
+
+local({
+  mai <- par("mai")
+  par(mai=adj_margins())
+  plot(c(0,10), c(0,10), type='n', xlab="x", ylab="y", main="The derivative of an integral", asp=1)
+  x <- seq(-1, 11, by=0.2)
+  y <- 2+2*sin(.2*pi*x)
+  col <- "lightyellow"
+  for(i in 1:(length(x)-1)){
+    polygon(c(x[i],x[i],x[i+1], x[i+1]), c(0,y[i], y[i+1], 0), col=col, border=col)
+  }
+  x1 <- seq(0, 4, by=0.02)
+  y1 <- 2 + 2*sin(.2*pi*x1)
+  col <- "lightpink"
+  for(i in 1:(length(x1)-1)){
+    polygon(c(x1[i],x1[i],x1[i+1], x1[i+1]), c(0,y1[i], y1[i+1], 0), col=col, border=col)
+  }
+  dx <- 0.33
+  y2 <- 2 + 2*sin(.2*pi*4)
+  col <- "red"
+  polygon(c(4,4+dx,4+dx,4,4), c(0, 0, y2, y2, 0), col=col, border = col)
+  abline(h=0:10, col="lightblue", lwd=2)
+  abline(v=0:10, col="lightblue", lwd=2)
+  lines(x, y, lwd=3)
+  text(4.15, y2+.3, expression(Delta*x), col="red")
+  text(4+dx+.25, 3, expression(y(4)), col="red", pos=4)
+  text(4, 6, expression(Area~~added==y(4)*Delta*x), col="red", cex=1.25)
+  text(5, 8.5, expression(rate~~of~~change:~~frac(y(4)*Delta*x,Delta*x)==y(4)), cex=1.25)
+  segments(4.2, y2+.5, 4.2, 6-.5, lty=3, lwd=2, col="red")
+  abline(h=0, lwd=3)
+  par(mai=mai)
+})
+```
+
