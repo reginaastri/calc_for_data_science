@@ -37,13 +37,13 @@ adj_margins <- function(){
 # Plot a square grid in a square plot window with grid lines
 # given by the tix argument, resetting par("mai") to its
 # original value after the fact.
-makegrid <- function(tix, xlab="x", ylab="y", origins=TRUE, ...){
+makegrid <- function(tix, xlab="x", ylab="y", major_axes=TRUE, ...){
   mai <- par("mai")
   par(mai=adj_margins())
   plot(tix, tix, type='n', xlab=xlab, ylab=ylab, ...)
   abline(h=tix, lwd=2, col="lightblue")
   abline(v=tix, lwd=2, col="lightblue")
-  if(origins){
+  if(major_axes){
     abline(v=0)
     abline(h=0)
   }

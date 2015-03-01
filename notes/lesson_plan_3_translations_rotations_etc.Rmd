@@ -37,6 +37,7 @@ text(1-3, 2+1.5, expression(c(1,2) + c(-3, 1.5)), pos=3, col="blue")
     + To scale a vector you multiply its x coordinate by one number and its y coordinate by another.
     + Multiplication by a diagonal matrix represents this process.
     + Make a random 2x2 diagonal matrix like this `M <- diag(runif(2), 2, 2)` and print it.
+    + TODO: Explain %*% before using it?
     + Multiply the vector `c(1,1)` by `M`. You get a row vector if you use `c(1,1) %*% M` and a column vector if you use `M %*% c(1,1)`. Note the correspondence between the resulting coordinates and the matrix diagonals.
     ```{r}
 set.seed(23543)
@@ -46,7 +47,7 @@ M %*% c(1,1)
 ```
     + Scaling stretches or squashes things. Here's what happens when we take a circle of radius 1 and multiply every point on its circumference by your matrix `M`.
     ```{r fig.show='hold', fig.align='center'}
-makegrid(seq(-2, 2, by=1), main="Scaling a circle by M", origins=FALSE)
+makegrid(seq(-2, 2, by=1), main="Scaling a circle by M", major_axes=FALSE)
 circle <- ellipse(1)
 polygon(circle, lwd=2)
 polygon(circle %*% M, lwd=2, border="red")
@@ -73,13 +74,14 @@ text(.5,.5, expression(R == bgroup("[", atop(list(cos(theta), -sin(theta)), list
 R <- matrix(c(cos(pi/3), sin(pi/3), -sin(pi/3), cos(pi/3)), 2, 2)
 makegrid(-2:2, main="Rotation matrix")
 p <- c(1,0)
+text(1,1.5, expression(R == bgroup("[", atop(list(cos(theta), -sin(theta)), list(sin(theta), cos(theta))),"]")), cex=1)
 for(i in 1:6){
   points(p[1], p[2], cex=2, pch=19, col="red")
   text(p[1], p[2], as.character(i-1), pos=2)
-  p <- R %*% p
+  ptemp <- R %*% p
+  p <- ptemp
   Sys.sleep(.25) # Make a movie
 }
-text(1,1.5, expression(R == bgroup("[", atop(list(cos(theta), -sin(theta)), list(sin(theta), cos(theta))),"]")), cex=1)
 ```
     + The matrix, R, rotated the first point, labeled 0, 60 degrees to point 1. Then it rotated point 1 another 60 degrees to point 2, point 2 to point 3, and so on.
     + Suppose we multiply R by itself using `R2 <- R %*% R`, and suppose we repeat the process with R2.
@@ -100,4 +102,31 @@ for(i in 1:3){
 }
 ```
     + The squared matrix, R2, rotated the first point **120** degrees to point 1. Then it rotated point 1 another 120 degrees to point 2. Applying the square of R once is like applying R twice.
-    + This is a general rule: applying the product of two matrices is like applying first the one and then the other. As we'll see later, though, we must pay careful attention to order.
+    + This is a general rule: applying the product of two matrices is like applying first the one and then the other. As we'll see, though, we must pay careful attention to order.
+    + We'll show this by creating a circle, then applying our two matrices, M, and R, to it in two different orders.
+    ```{r fig.show='hold', fig.align='center'}
+circle <- ellipse(1)
+makegrid(-2:2, major_axes=FALSE, main="Matrices: order matters")
+polygon(circle, lwd=2)
+# Function polygon expects a matrix whose rows contain the x and y coordinates
+# of vertices. Hence the use of transpose.
+# TODO: clean up the use of left and right multiplication by matrices.
+polygon(t(M %*% R %*% t(circle)), lwd=2, border="red")
+text(0, 1.5, "M %*% R %*% circle", cex=1.5, col="red")
+polygon(t(R %*% M %*% t(circle)), lwd=2, border="blue")
+text(0, -1.5, "R %*% M %*% circle", cex=1.5, col="blue")
+```
+    + R is a rotation, and rotating a circle about its center doesn't change it; `R %*% circle = circle`. So, `M %*% R %*% circle` gives the same result as `M %*% circle.`
+    + However, if we apply M first, we change the circle into an ellipse by scaling. If we then apply R to the ellipse, we rotate it by 60 degrees.
+    + Show that `M %*% R != R %*% M`. (They are almost transposes but not quite.)
+
+5. The general case
+    + We've seen that some 2x2 matrices represent scaling and some represent rotation. We've also seen that multiplying matrices corresponds to applying them in sequence, and that the order in which they are applied matters.
+    + Scaling and rotation are special cases. Is it possible that *any* 2x2 matrix can be represented as a product of scaling and rotation matrices?
+    + As it turns out, the answer is yes *provided* complex numbers are allowed. Any matrix can be represented as a "rotation", followed by "scaling", followed by another "rotation" as long as the quoted words are properly generalized.
+    + The generalized form of a "scaling" matrix is a diagonal matrix which may contain complex numbers.
+    + The generalized form of a "rotation" matrix is a matrix which does not change the length, that is the distance from the origin, of any vector to which it is applied. 
+    + A representation in terms of "rotation", then "scaling", then "rotation", is called a Singular Value Decomposition. (The term "singular value" refers to an element of the diagonal matrix.) We will not cover singular value decompositions in these introductory lessons, except to point out R's `svd` function.
+    + `svd` will perform a singular value decomposition. For illustration, form a random 2x2 matrix, N, as follows `N <- matrix(rnorm(4), 2, 2)`, and let `s <- svd(N)`. Inspect `s`, compare `s$u %*% s$d %*% s$v` with `N`, and so on.
+
+6. Linearity
