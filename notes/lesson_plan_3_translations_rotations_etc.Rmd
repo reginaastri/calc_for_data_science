@@ -1,0 +1,103 @@
+---
+title: "Translations, Rotations, and Scaling."
+author: "W. Bauer"
+date: "02/27/2015"
+output: html_document
+---
+```{r}
+source("../R/utilities.R")
+```
+
+1. The point of this unit (lesson or lessons) is to illustrate the basic concepts of linear algebra visually, using plane figures. The basic concepts include
+    + Translations, rotations and scaling. Circles and ellipses.
+    + Linearity.
+    + Matrix multiplication; composition of operators.
+    + Matrix inversion; solving linear equations
+    + Inner products
+    + Euclidean distance and quadratic forms (with representation as (x-m)'M(x-m))
+
+2. Translation
+    + We can specify any point in the plane by its x and y coordinates, say x=1, y=2.
+    + If the x and y coordinates are concatenated to form a vector, say, `c(1, 2)`, this vector represents a point's position.
+    + Addition of vectors represents movement, a.k.a. "translation."
+    + If we start at position `c(1, 2)` and add `c(-3, 1.5)` we move the x coordinate 3 units to the left, and the y coordinate 1.5 units up.
+    + Vectors are added by adding their coordinates. Does the order of vector addition matter?
+```{r fig.show='hold', fig.align='center'}
+makegrid(-5:5, main="Vectors represent position.\nVector addition represents movement.", xlab="", ylab="")
+points(1, 2, cex=2, pch=19, col="red")
+points(1-3, 2+1.5, cex=2, pch=19, col="blue")
+arrows(1, 2, 1-3, 2+1.5, lty=1, lwd=2)
+text(1, 2, expression(c(1,2)), pos=1, col="red")
+text(1-3, 2+1.5, expression(c(1,2) + c(-3, 1.5)), pos=3, col="blue")
+```
+
+3. Scaling
+    + Vectors represent positions, and vector addition represents movement or translation.
+    + Matrices represent rotation and scaling. Let's begin with scaling.
+    + To scale a vector you multiply its x coordinate by one number and its y coordinate by another.
+    + Multiplication by a diagonal matrix represents this process.
+    + Make a random 2x2 diagonal matrix like this `M <- diag(runif(2), 2, 2)` and print it.
+    + Multiply the vector `c(1,1)` by `M`. You get a row vector if you use `c(1,1) %*% M` and a column vector if you use `M %*% c(1,1)`. Note the correspondence between the resulting coordinates and the matrix diagonals.
+    ```{r}
+set.seed(23543)
+M <- diag(runif(2), 2, 2)
+M
+M %*% c(1,1)
+```
+    + Scaling stretches or squashes things. Here's what happens when we take a circle of radius 1 and multiply every point on its circumference by your matrix `M`.
+    ```{r fig.show='hold', fig.align='center'}
+makegrid(seq(-2, 2, by=1), main="Scaling a circle by M", origins=FALSE)
+circle <- ellipse(1)
+polygon(circle, lwd=2)
+polygon(circle %*% M, lwd=2, border="red")
+temp <- seq(0, 2*pi, by=pi/4)
+arrows(cos(temp), sin(temp), M[1,1]*cos(temp), M[2,2]*sin(temp), lwd=2, col="blue")
+text(-1.5, 0, "M[1,1]*x", col="blue")
+text(0, 1, "M[2,2]*y", pos=3, col="blue")
+```
+
+4. Rotation
+    + We've seen that our diagonal matrix, `M`,  makes a circle into an ellipse. But `M` only has two non-zero entries. What are its other entries for?
+    + To answer that question consider matrices of a different special form.
+    $$R = \left[ \begin{array}{ccc}
+    cos(\theta) & -sin(\theta) \\
+    sin(\theta) & cos(\theta) \end{array} \right]$$
+    ```{r fig.show='hold', fig.align='center'}
+    # NOTE: To display this as a plot use something like
+plot(0:1, 0:1, type='n', xlab="", ylab="", xaxt="n", yaxt="n", bty="n")
+text(.5,.5, expression(R == bgroup("[", atop(list(cos(theta), -sin(theta)), list(sin(theta), cos(theta))),"]")), cex=3)
+```
+    + We've created such a matrix, R, with $\theta = \pi/3 \: radians$, which is the same as $60 \: degrees.$
+    + Beginning with `p <- c(1,0)`, we'll repeatedly set `p <- R %*% p` and plot the result of each iteration.
+    ```{r fig.show='hold', fig.align='center'}
+R <- matrix(c(cos(pi/3), sin(pi/3), -sin(pi/3), cos(pi/3)), 2, 2)
+makegrid(-2:2, main="Rotation matrix")
+p <- c(1,0)
+for(i in 1:6){
+  points(p[1], p[2], cex=2, pch=19, col="red")
+  text(p[1], p[2], as.character(i-1), pos=2)
+  p <- R %*% p
+  Sys.sleep(.25) # Make a movie
+}
+text(1,1.5, expression(R == bgroup("[", atop(list(cos(theta), -sin(theta)), list(sin(theta), cos(theta))),"]")), cex=1)
+```
+    + The matrix, R, rotated the first point, labeled 0, 60 degrees to point 1. Then it rotated point 1 another 60 degrees to point 2, point 2 to point 3, and so on.
+    + Suppose we multiply R by itself using `R2 <- R %*% R`, and suppose we repeat the process with R2.
+    ```{r fig.show='hold', fig.align='center'}
+R2 <- R %*% R
+makegrid(-2:2, main="Rotation matrix squared")
+p <- c(1,0)
+for(i in 1:6){
+  points(p[1], p[2], cex=2, pch=19, col="red")
+  p <- R %*% p
+}
+p <- c(1,0)
+for(i in 1:3){
+  points(p[1], p[2], cex=3, pch=21, col="blue", lwd=3)
+  text(p[1]-.1, p[2], as.character(i-1), pos=2)
+  p <- R2 %*% p
+  Sys.sleep(.5)
+}
+```
+    + The squared matrix, R2, rotated the first point **120** degrees to point 1. Then it rotated point 1 another 120 degrees to point 2. Applying the square of R once is like applying R twice.
+    + This is a general rule: applying the product of two matrices is like applying first the one and then the other. As we'll see later, though, we must pay careful attention to order.
