@@ -129,4 +129,12 @@ text(0, -1.5, "R %*% M %*% circle", cex=1.5, col="blue")
     + A representation in terms of "rotation", then "scaling", then "rotation", is called a Singular Value Decomposition. (The term "singular value" refers to an element of the diagonal matrix.) We will not cover singular value decompositions in these introductory lessons, except to point out R's `svd` function.
     + `svd` will perform a singular value decomposition. For illustration, form a random 2x2 matrix, N, as follows `N <- matrix(rnorm(4), 2, 2)`, and let `s <- svd(N)`. Inspect `s`, compare `s$u %*% s$d %*% s$v` with `N`, and so on.
 
-6. Linearity
+6. Inverses
+    + A rotation can clearly be reversed: you just apply a rotation of the same amount in the opposite direction. To reverse a rotation of 60 degrees, you apply a rotation of minus 60 degrees. Two operations which cancel each other out like this are called *inverse operations*. Their associated matrices are called *inverses*.
+    + If you simply exchange, or *transpose*, the rows and columns of a rotation matrix you get its inverse. R's function, `t`, will form the transpose of a matrix. See what happens when you multiply `R %*% t(R)` and `t(R) %*% R`.
+    + You get a diagonal matrix which scales both coordinates by 1. Since multiply by 1 doesn't change anything, this matrix is called the *identity*.
+    + If rotations always have inverses, and if every matrix can be written as a rotation times a diagonal matrix times another rotation, does every diagonal matrix have an inverse?
+    + The inverse of a diagonal matrix can be formed by taking the reciprocals of its diagonal entries.
+    + Recall that M is diagonal. Form the matrix `iM <- matrix(c(1/M[1,1], 0, 0, 1/M[2,2]))` and look at the matrices `M %*% iM` and `iM %*% M`.
+    + Does every diagonal matrix have an inverse? When not?
+    + Does every matrix have an inverse?
