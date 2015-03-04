@@ -10,3 +10,5 @@ The proposed aim is to teach just enough calculus and (finite dimensional) linea
 More generally, probability and calculus are the two great modeling technologies. Interest in one should breed interest in the other. In their modern forms, both arose in 17th Century Europe, calculus in connection with planetary motion, probability in connection with games of chance. (It was always more down to Earth.) Computers have revolutionized application of both.
 
 Exactly what can or will be done remains to be seen. In the absence of slides and videos, a short monograph to accompany the swirl lessons is anticipated.
+
+Link to [github pages](http://wilcrofter.github.io/calc_for_data_science/index.html)

@@ -10,8 +10,8 @@ The Coursera Data Science Specialization does not require calculus or linear alg
 The proposed aim is to teach just enough calculus and (finite dimensional) linear algebra for an understanding of quadratic form minimization and of principal components, presupposing only familiarity with R and basic algebra. This objective's modesty is due to the experimental nature of the course, which is twofold. It would be the first "auxiliary" DSS course, supporting the specialization but not actually in it. Also, it could become an introduction or review for a contemplated linear models MOOC.
 
 [What to cover?](notes/coverage.html) elaborates the above paragraph.
-[Outline of topic sequence](notes/lesson_outline.html) proposes how to get there.
 
 ### Lesson Plan
 1. [Calculus and Linear Algebra--What are they good for?](notes/lesson_plan_1_what_are_they_good_for.html)--a bird's eye view of the topics and an example of application to tsunami forecasting.
 2. [Lines, Curves, Tangents, Distance, Length, and Area](notes/lesson_plan_2_lines_curves_etc.html)--Visual introduction to the general ideas using plane curves and figures.
+3. [Translations, Rotations, and Scaling](notes/lesson_plan_3_translations_rotations_etc.html)
