@@ -6,3 +6,14 @@ output: html_document
 ---
 
 1. The point of this unit is to introduce quadratic forms and partial derivatives in a general setting.
+
+```{r}
+# load package numDeriv, installing if necessary
+suppressWarnings({
+  if(!require(numDeriv)){
+    install.packages("numDeriv")
+    library(numDeriv)
+    }
+  })
+```
+

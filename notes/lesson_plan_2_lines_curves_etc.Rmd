@@ -8,9 +8,9 @@ output: html_document
 1. The point of this unit (lesson or lessons) is to illustrate the basic concepts of calculus visually, using plane figures.
 
 2. Plane geometry is about lines and curves. Thanks to René Descartes, 1596-1650, it is also about Cartesian coordinates, which is what the light blue grid lines are about. 
-  * We can specify any point in the plane by its x and y coordinates. The circle's center, for instance, has x coordinate 8 and y coordinate 6. One end of the line is at x=1 and y=6, the other at x=5, y=9. 
-  * Using `points(x, y, pch=19, cex=3, col="green")` put a fat, green point at coordinates, x and y, of your choice; just be sure both x and y are between 0 and 10 so your point appears on the graph.
-  * Thus, any point in the plane can be represented by a vector of 2 numbers. In R we'd represent the circle's center as `c(8,6)` and the endpoints of the line as `c(1,6)` and `c(5,9)`.
+    + We can specify any point in the plane by its x and y coordinates. The circle's center, for instance, has x coordinate 8 and y coordinate 6. One end of the line is at x=1 and y=6, the other at x=5, y=9. 
+    + Using `points(x, y, pch=19, cex=3, col="green")` put a fat, green point at coordinates, x and y, of your choice; just be sure both x and y are between 0 and 10 so your point appears on the graph.
+    + Thus, any point in the plane can be represented by a vector of 2 numbers. In R we'd represent the circle's center as `c(8,6)` and the endpoints of the line as `c(1,6)` and `c(5,9)`.
 
 ```{r echo=FALSE, fig.show='hold'}
 
@@ -57,10 +57,10 @@ local({
 #### Derivatives
 
 3. A line has a slope and a length. 
-  * A line's slope is the simplest example of a *derivative*. In the figure, if x increases by 1, then y increases by 3/4. We say that 3/4 is the rate of change of y with respect to x, or the *derivative* of y with respect to x.
-  * According to Pythagoras, "The square on the hypotenuse of a right triangle is equal to the sum of the squares on its other two sides." Thus we can calculate the length of a line from the coordinates of its endpoints.
-  * The square on the hypotenuse, $3^2+4^2$ in the figure, the simplest example of a *quadratic form*. It is called *quadratic* because of the squares, and *form*, is short for formula.
-  * The line's length, of course, is the square root of the quadratic form.
+    + A line's slope is the simplest example of a *derivative*. In the figure, if x increases by 1, then y increases by 3/4. We say that 3/4 is the rate of change of y with respect to x, or the *derivative* of y with respect to x.
+    + According to Pythagoras, "The square on the hypotenuse of a right triangle is equal to the sum of the squares on its other two sides." Thus we can calculate the length of a line from the coordinates of its endpoints.
+    + The square on the hypotenuse, $3^2+4^2$ in the figure, the simplest example of a *quadratic form*. It is called *quadratic* because of the squares, and *form*, is short for formula.
+    + The line's length, of course, is the square root of the quadratic form.
 
 ```{r echo=FALSE, fig.show='hold'}
 local({
@@ -82,10 +82,10 @@ local({
 ```
 
 3. The closer you look at a smooth curve, the more it looks like a line.
-  * In the figure, we're zooming in on the green box.
-  * In the upper left we're looking at the curve with no magnification. The green box is barely visible. At 5X magnification, the green box is visible. At 50X magnification, the line and the curve are indistiguishable by eye.
-  * By a process such at this, we can assign a slope to any point on a smooth curve. Such a slope is called the derivative of the curve and is usually written dy/dx.
-  * The notation dy/dx is loosely understood as a ratio of "infinitesimals." Loosely speaking, it is the ratio of an infinitesimally small change in y to a corresponding infinitesimally small change in x.
+    + In the figure, we're zooming in on the green box.
+    + In the upper left we're looking at the curve with no magnification. The green box is barely visible. At 5X magnification, the green box is visible. At 50X magnification, the line and the curve are indistiguishable by eye.
+    + By a process such at this, we can assign a slope to any point on a smooth curve. Such a slope is called the derivative of the curve and is usually written dy/dx.
+    + The notation dy/dx is loosely understood as a ratio of "infinitesimals." Loosely speaking, it is the ratio of an infinitesimally small change in y to a corresponding infinitesimally small change in x.
 
 ```{r echo=FALSE, fig.show='hold'}
 
@@ -131,10 +131,10 @@ local({
 ```
 
 4. The slope, or derivative, of a curve depends on the position at which it is estimated. 
-  * In the figure, the curve's derivative goes from positive (upward sloping,) to negative and back to positive as the x coordinate varies from 0 to 10.
-  * When the derivative of a curve is positive, y is increasing as x increases. When the derivative is negative, y is decreasing as x increases.
-  * The blue points are at a maximum (y=4) and a minimum (y=0) of the curve. What is the derivative of the curve at those points?
-  * The derivative is always zero at a point where it stops increasing and starts decreasing, or when it stops decreasing and starts increasing. In other words, as the derivative changes sign it passes through zero.
+    + In the figure, the curve's derivative goes from positive (upward sloping,) to negative and back to positive as the x coordinate varies from 0 to 10.
+    + When the derivative of a curve is positive, y is increasing as x increases. When the derivative is negative, y is decreasing as x increases.
+    + The blue points are at a maximum (y=4) and a minimum (y=0) of the curve. What is the derivative of the curve at those points?
+    + The derivative is always zero at a point where it stops increasing and starts decreasing, or when it stops decreasing and starts increasing. In other words, as the derivative changes sign it passes through zero.
 
 ```{r echo=FALSE, fig.show='hold'}
 local({
@@ -157,16 +157,16 @@ local({
 ```
 
 5. Review. Examples of the following have been introduced
-  * Cartesian coordinates
-  * Quadratic forms
-  * Derivatives
-  * The behavior of derivatives at extrema
+    + Cartesian coordinates
+    + Quadratic forms
+    + Derivatives
+    + The behavior of derivatives at extrema
 
 #### Integrals
 
 6. Curves also have areas. 
-  * The circle's area is that enclosed by the circle. 
-  * The curve's area is that between the curve itself and the x axis.
+    + The circle's area is that enclosed by the circle. 
+    + The curve's area is that between the curve itself and the x axis.
 
 ```{r echo=FALSE, fig.show='hold'}
 local({
@@ -190,9 +190,9 @@ local({
 ```
 
 7. Counting boxes
-  * To estimate either area, you could count the number of boxes it takes to contain them.
-  * How many boxes does it take to contain the circle? (16)
-  * So we know the circle's area is less than 16.
+    + To estimate either area, you could count the number of boxes it takes to contain them.
+    + How many boxes does it take to contain the circle? (16)
+    + So we know the circle's area is less than 16.
 
 ```{r echo=FALSE, fig.show='hold'}
 
@@ -233,12 +233,12 @@ local({
 
 
 7. Or you could make the boxes smaller, say 1/4 by 1/4.
-  * Now each box has area 1/16.
-  * It takes about 216 smaller boxes to cover the square, giving an area of 216/16 = 13.5.
-  * Since the circle has radius 2, we know the area is $\pi r^2 = 12.6$, so we're getting closer.
-  * You could continue this indefinitely, and get better and better estimates.
-  * We say the area of the circle is the *limit* of this process.
-  * This is the idea behind integration.
+    + Now each box has area 1/16.
+    + It takes about 216 smaller boxes to cover the square, giving an area of 216/16 = 13.5.
+    + Since the circle has radius 2, we know the area is $\pi r^2 = 12.6$, so we're getting closer.
+    + You could continue this indefinitely, and get better and better estimates.
+    + We say the area of the circle is the *limit* of this process.
+    + This is the idea behind integration.
 
 ```{r echo=FALSE, fig.show='hold'}
 local({
@@ -262,9 +262,9 @@ local({
 ```
 
 8. The area under a curve between two points on the x axis, such as x=0 and x=4 in the figure, is known as a *definite* integral, and is written as shown above the area (pink) it represents.
-  * As with derivatives, dx represents an infinitesimal difference in x.
-  * The curve itself is denoted y(x), meaning the value of y at x, e.g., y(0)=2.
-  * This kind of curve, which has exactly one y coordinate for every x coordinate, is generally called a *function*. We say y is a function of x. From now on, we'll use the word, function, for this kind of curve.
+    + As with derivatives, dx represents an infinitesimal difference in x.
+    + The curve itself is denoted y(x), meaning the value of y at x, e.g., y(0)=2.
+    + This kind of curve, which has exactly one y coordinate for every x coordinate, is generally called a *function*. We say y is a function of x. From now on, we'll use the word, function, for this kind of curve.
 
 ```{r echo=FALSE, fig.align='center', fig.show='hold'}
 
@@ -289,11 +289,11 @@ local({
 ```
 
 9. The definite integral can be approximated in the same general way as the area of circle.
-  * In the figure, we approximate the definite integral by rectangles.
-  * The rectangles are as wide as the grid points and as high as y(x), where x=0, 1, 2, 3.
-  * The total area covered by the rectangles is $y(0) \cdot 1 + y(1) \cdot 1 + y(2) \cdot 1 + y(3) \cdot 1.$
-  * A smaller grid would give a better approximation to the area.
-  * The definite integral is the *limit* of such sums as the width of the rectangles, $\Delta x$ approaches zero.
+    + In the figure, we approximate the definite integral by rectangles.
+    + The rectangles are as wide as the grid points and as high as y(x), where x=0, 1, 2, 3.
+    + The total area covered by the rectangles is $y(0) \cdot 1 + y(1) \cdot 1 + y(2) \cdot 1 + y(3) \cdot 1.$
+    + A smaller grid would give a better approximation to the area.
+    + The definite integral is the *limit* of such sums as the width of the rectangles, $\Delta x$ approaches zero.
 
 ```{r echo=FALSE, fig.align='center', fig.show='hold'}
 
@@ -355,9 +355,9 @@ local({
 #### The Fundamental Theorem of Calculus.
 
 11. The *Fundamental Theorem of Calculus* is that differentiation and integration are inverse operations. Loosely speaking, both the derivative of the integral and the integral of the derivative give back the function itself.
-  * A more precise statement is shown in the figure.
-  * The rate of change of a definite integral with respect to its upper endpoint, t, is the function itself, y, evaluated at t.
-  * The definite integral of the derivative of a function is the difference, y(t)-y(a), between the function evaluated at the endpoints of the integral.
+    + A more precise statement is shown in the figure.
+    + The rate of change of a definite integral with respect to its upper endpoint, t, is the function itself, y, evaluated at t.
+    + The definite integral of the derivative of a function is the difference, y(t)-y(a), between the function evaluated at the endpoints of the integral.
 
 ```{r echo=FALSE, fig.align='center', fig.show='hold'}
 local({
@@ -369,11 +369,11 @@ local({
 ```
 
 12. The emphasis in this swirl lesson is visual and intuitive, so we won't present an algebraic proof of the Fundamental Theorem here. (We may present it later in the course in an accompanying monograph.) However, the idea is fairly easy to grasp.
-  * The figure shows a small increment of area added to the definite integral of y(x).
-  * The area added is a rectangle $\Delta x$ wide and y(4) high.
-  * To estimate the rate of change in area due to a small change, $\Delta x$, in x, we divided this area by $\Delta x$ to get y(4).
-  * This indicates how part a of the Fundamental Theorem is proved.
-  * Part b is similarly intuitive. Loosely speaking, the dx's under the integral sign "divide out," leaving incremental changes, dy, in y, to be added up. They add up to the difference between the starting point and the ending point.
+    + The figure shows a small increment of area added to the definite integral of y(x).
+    + The area added is a rectangle $\Delta x$ wide and y(4) high.
+    + To estimate the rate of change in area due to a small change, $\Delta x$, in x, we divided this area by $\Delta x$ to get y(4).
+    + This indicates how part a of the Fundamental Theorem is proved.
+    + Part b is similarly intuitive. Loosely speaking, the dx's under the integral sign "divide out," leaving incremental changes, dy, in y, to be added up. They add up to the difference between the starting point and the ending point.
 
 ```{r echo=FALSE, fig.align='center', fig.show='hold'}
 
