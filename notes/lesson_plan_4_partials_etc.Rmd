@@ -1,0 +1,72 @@
+---
+title: "Quadratic Forms and Partial Derivatives"
+author: "W. Bauer"
+date: "03/03/2015"
+output: html_document
+---
+
+```{r echo=FALSE}
+# load package numDeriv, installing if necessary
+suppressWarnings({
+  if(!require(numDeriv)){
+    install.packages("numDeriv")
+    library(numDeriv)
+    }
+  })
+source("../R/utilities.R")
+```
+
+1. The point of this unit is to introduce quadratic forms and partial derivatives in a general setting.
+    + Previously, we noted the simplest example of a derivative is the slope of a line.
+    + We also noted that the closer you look at a smooth curve, the more it looks like a line. This allows us to assign a slope to any smooth curve by taking a limit.
+    ```{r fig.show='hold', fig.align='center'}
+makegrid(0:4, ylab="f(x)", major_axes=FALSE, main="Derivative of a function of 1 variable", cex.lab=2)
+local({
+  x <- seq(0,4,by=.1)
+  y <- 2*sin(pi*x/4)
+  lines(x, y, lwd=3)
+  y1 <- 2*sin(pi*1.5/4)
+  slope <- (pi/2)*cos(pi*1.5/4)
+  y2 <- y1 + slope
+  points(1.5, y1, pch=19, col="blue", cex=2.0)
+  arrows(1.1, y1-.4*slope, 2.5, y2, lwd=3, col="blue")
+  text(.25, 3.0, expression(over(d*f(x), d*x)== lim(over(f(x + Delta*x) - f(x), Delta*x), Delta*x %->% 0)), cex=1.5, pos=4)
+  })
+```
+
+2. The gradient: climbing Maunga Whau
+
+    ```{r fig.show='hold', fig.align='center'}
+maunga_whau <- function(main="Maunga Whau\nOne of 50 Volcanoes in the Auckland Region."){
+  # Adapted from demo(persp)
+  z <- 2*datasets::volcano # 2* to exagerate relief
+  x <- 10 * (1:nrow(z))   # 10 meter spacing (S to N)
+  y <- 10 * (1:ncol(z))   # 10 meter spacing (E to W)
+  z0 <- min(z) - 20
+  z <- rbind(z0, cbind(z0, z, z0), z0)
+  x <- c(min(x) - 1e-10, x, max(x) + 1e-10)
+  y <- c(min(y) - 1e-10, y, max(y) + 1e-10)
+  fill <- matrix("green3", nrow = nrow(z)-1, ncol = ncol(z)-1)
+  fill[ , i2 <- c(1,ncol(fill))] <- "gray"
+  fill[i1 <- c(1,nrow(fill)) , ] <- "gray"
+  bg <- par("bg")
+  par(bg = "lightblue")
+  res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, axes = FALSE, box=FALSE)
+  title(main = main, font.main = 4)
+  # NOTE: x varies from back to front, y from left to right
+  par(bg=bg)
+  list(res=res, x=x, y=y, z=z)
+}
+res <- maunga_whau()
+```
+
+    ```{r fig.show='hold', fig.align='center'}
+local({
+  myx <- 89-15
+  myy <- 63-32
+  myloc <- trans3d(res$x[myx], res$y[myy], res$z[myx,myy], res$res)
+  points(myloc, pch=19, cex=1.5, col="yellow")
+  mygrd <- trans3d(res$x[myx-1]*.925, res$y[myy-1]*.925, res$z[myx, myy]/.925, res$res)
+  arrows(myloc$x, myloc$y, mygrd$x, mygrd$y, col="yellow", lwd=3)
+  })
+```

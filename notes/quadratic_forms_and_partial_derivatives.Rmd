@@ -1,8 +1,0 @@
----
-title: "Quadratic Forms and Partial Derivatives"
-author: "W. Bauer"
-date: "03/03/2015"
-output: html_document
----
-
-1. The point of this unit is to introduce quadratic forms and partial derivatives in a general setting.
