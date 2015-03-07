@@ -5,14 +5,12 @@ date: "03/03/2015"
 output: html_document
 ---
 
-```{r echo=FALSE}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
 # load package numDeriv, installing if necessary
-suppressWarnings({
-  if(!require(numDeriv)){
-    install.packages("numDeriv")
-    library(numDeriv)
-    }
-  })
+if(!require(numDeriv)){
+  install.packages("numDeriv")
+  library(numDeriv)
+  }
 source("../R/utilities.R")
 ```
 
@@ -30,7 +28,7 @@ local({
   y2 <- y1 + slope
   points(1.5, y1, pch=19, col="blue", cex=2.0)
   arrows(1.1, y1-.4*slope, 2.5, y2, lwd=3, col="blue")
-  text(.25, 3.0, expression(over(d*f(x), d*x)== lim(over(f(x + Delta*x) - f(x), Delta*x), Delta*x %->% 0)), pos=4)
+  text(.25, 3.0, expression(over(d*f(x), d*x) %==% lim(over(f(x + Delta*x) - f(x), Delta*x), Delta*x %->% 0)), pos=4)
   })
 ```
 
@@ -58,27 +56,48 @@ local({
     + For this case there are *partial derivatives* in which estimate the slope with respect to one variable while holding the others constant.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 plot(0:1, 0:1, type='n', xlab="", ylab="", main="Partial Derivatives", xaxt='n', yaxt='n', bty='n')
-text(0, 0.8, expression(over(partialdiff*f(x,y), partialdiff*x)== lim(over(f(x + Delta*x, y) - f(x, y), Delta*x), Delta*x %->% 0)), pos=4, cex=1.5)
-text(0, 0.2, expression(over(partialdiff*f(x,y), partialdiff*y)== lim(over(f(x, y + Delta*y) - f(x, y), Delta*y), Delta*y %->% 0)), pos=4, cex=1.5)
+text(0, 0.8, expression(over(partialdiff*f(x,y), partialdiff*x) %==% lim(over(f(x + Delta*x, y) - f(x, y), Delta*x), Delta*x %->% 0)), pos=4, cex=1.5)
+text(0, 0.2, expression(over(partialdiff*f(x,y), partialdiff*y) %==% lim(over(f(x, y + Delta*y) - f(x, y), Delta*y), Delta*y %->% 0)), pos=4, cex=1.5)
 ```
     + At a point on Maunga Whau, the partial derivatives represent slope in the x and y directions respectively. In the case pictured, the longer arrow represents slope in the x, or northward, direction. In this direction, the slope is clearly negative, or downhill. In the y, or westward, direction the slope is much less severe and is slightly uphill as the shorter arrow illustrates.  
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
-local({
-  bg <- par("bg")
-  par(bg="lightblue")
-  res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Partial Derivatives")
-  par(bg=bg)
-  myx <- 89-16# 89-15
-  myy <- 63-42 # 63-32
-  myloc <- trans3d(x[myx], y[myy], z[myx, myy], res)
-  points(myloc$x, myloc$y, pch=19, cex=1.5, col="yellow")
-  dfdx <- (z[myx+1, myy]-z[myx, myy])/10
-  mydx <- trans3d(x[myx+5], y[myy], z[myx, myy] + dfdx*50, res)
-  arrows(myloc$x, myloc$y, mydx$x, mydx$y, lwd=3, col="yellow")
-  dfdy <- (z[myx, myy+1]-z[myx, myy])/10
-  mydy <- trans3d(x[myx], y[myy+5], z[myx, myy] + dfdy*50, res)
-  arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=3, col="yellow")
-   })
+bg <- par("bg")
+par(bg="lightblue")
+res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Partial Derivatives")
+par(bg=bg)
+myx <- 89-16# 89-15
+myy <- 63-42 # 63-32
+myloc <- trans3d(x[myx], y[myy], z[myx, myy], res)
+points(myloc$x, myloc$y, pch=19, cex=1.5, col="yellow")
+dfdx <- (z[myx+1, myy]-z[myx, myy])/10
+mydx <- trans3d(x[myx+5], y[myy], z[myx, myy] + dfdx*50, res)
+arrows(myloc$x, myloc$y, mydx$x, mydx$y, lwd=3, col="yellow")
+dfdy <- (z[myx, myy+1]-z[myx, myy])/10
+mydy <- trans3d(x[myx], y[myy+5], z[myx, myy] + dfdy*50, res)
+arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=3, col="yellow")
 ```
-
-
+    + As illustrated in the figure, the *gradient* of a function is a vector of its partial deriviatives. It is usually symbolized by a nabla (upside down triangle.)
+    ```{r fig.show='hold', fig.align='center', echo=FALSE}
+plot(0:1, 0:1, type='n', xlab="", ylab="", main="Gradient of f(x,y)", xaxt='n', yaxt='n', bty='n')
+text(.5, .5, expression(nabla*f(x, y) %==% bgroup("(",atop(over(partialdiff*f(x,y), partialdiff*x), over(partialdiff*f(x,y), partialdiff*y)),")")), cex=2)
+```
+    + It can be shown that the gradient indicates the magnitude and direction of steepest incline. The gradient at that same point on Maunga Whau is shown here in pink.
+    ```{r fig.show='hold', fig.align='center', echo=FALSE}
+bg <- par("bg")
+par(bg="lightblue")
+res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Gradient at a Point on Maunga Whau")
+par(bg=bg)
+myx <- 89-16# 89-15
+myy <- 63-42 # 63-32
+myloc <- trans3d(x[myx], y[myy], z[myx, myy], res)
+points(myloc$x, myloc$y, pch=19, cex=1.5, col="yellow")
+dfdx <- (z[myx+1, myy]-z[myx, myy])/10
+mydx <- trans3d(x[myx+5], y[myy], z[myx, myy] + dfdx*50, res)
+arrows(myloc$x, myloc$y, mydx$x, mydx$y, lwd=2, col="yellow")
+dfdy <- (z[myx, myy+1]-z[myx, myy])/10
+mydy <- trans3d(x[myx], y[myy+5], z[myx, myy] + dfdy*50, res)
+arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=2, col="yellow")
+grd <- trans3d(x[myx+5], y[myy+5], z[myx, myy] + (dfdx+dfdy)*50, res)
+arrows(myloc$x, myloc$y, grd$x, grd$y, lwd=4, col='pink')
+```
+    + Gradients of zero? Followed by the function, gradient?
