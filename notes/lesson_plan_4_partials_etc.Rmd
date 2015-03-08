@@ -12,11 +12,12 @@ if(!require(numDeriv)){
   library(numDeriv)
   }
 source("../R/utilities.R")
+source("../R/maungaWhau.R")
 ```
 
 1. The point of this unit is to introduce partial derivatives in a general setting.
     + Previously, we noted the simplest example of a derivative is the slope of a line.
-    + We also noted that the closer you look at a smooth curve, the more it looks like a line. This allows us to assign a slope to any smooth curve by taking a limit.
+    + We also noted that the closer you look at a smooth curve, the more it looks like a line. This allows us to assign a slope at any point on a smooth curve by taking a limit.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 makegrid(0:4, ylab="f(x)", major_axes=FALSE, main="Derivative of a function of 1 variable", cex.lab=2)
 local({
@@ -36,17 +37,6 @@ local({
     + The previous example involved a function, f(x), of one variable, x.
     + In general, we may have functions of several variables, such as this topographic map of Maunga Whau volcano. Here f(x, y) is altitude, x is northward distance from a reference point, and y is westward distance from the reference point.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
-  # Adapted from demo(persp)
-  z <- 2*datasets::volcano # 2* to exagerate relief
-  x <- 10 * (1:nrow(z))   # 10 meter spacing (S to N)
-  y <- 10 * (1:ncol(z))   # 10 meter spacing (E to W)
-  z0 <- min(z) - 20
-  z <- rbind(z0, cbind(z0, z, z0), z0)
-  x <- c(min(x) - 1e-10, x, max(x) + 1e-10)
-  y <- c(min(y) - 1e-10, y, max(y) + 1e-10)
-  fill <- matrix("green3", nrow = nrow(z)-1, ncol = ncol(z)-1)
-  fill[ , i2 <- c(1,ncol(fill))] <- "gray"
-  fill[i1 <- c(1,nrow(fill)) , ] <- "gray"
   bg <- par("bg")
   par(bg = "lightblue")
   res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, xlab="x (South to North)", ylab="y (East to West)", zlab = "f(x, y)")
@@ -100,4 +90,37 @@ arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=2, col="yellow")
 grd <- trans3d(x[myx+5], y[myy+5], z[myx, myy] + (dfdx+dfdy)*50, res)
 arrows(myloc$x, myloc$y, grd$x, grd$y, lwd=4, col='pink')
 ```
-    + Gradients of zero? Followed by the function, gradient?
+    + Gradients can be estimated using the function, `grad`, in package numDiff.
+    + It takes two arguments, a function and a point at which the gradient of the function is to be estimated.
+    + So grad is a function of another function and a point.
+    + The point must be represented by a vector.
+    + The function, grad's first argument, is an R function which takes a vector argument and returns the value at the point represented by the vector.
+    + We've written `mw(point)` which gives the altitude of Maunga Whau as a function of point coordinates. (Actually it gives twice the altitude, since that's the way z is calibrated.)
+    + Illustrate the use of `mw` by finding the altitude at the pictured points.
+    ```{r fig.show='hold', fig.align='center', echo=FALSE}
+place <- function(i, j, res, col="yellow"){
+  temp <- trans3d(x[i], y[j], z[i,j], res)
+  points(temp$x, temp$y, pch=19, cex=1.5, col=col)
+  text(temp$x, temp$y, paste0("c(",x[i],",",y[j],")"), pos=3, col=col, lwd=2)
+}
+bg <- par("bg")
+par(bg="lightblue")
+res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Points and Gradients on Maunga Whau")
+par(bg=bg)
+place(68,32,res)
+place(59,40,res)
+place(37,47,res)
+```
+    
+    ```{r}
+mw(c(670, 310))
+mw(c(580, 390))
+mw(c(360, 460))
+```
+    + Illustrate `grad` by finding the gradient at those same points
+    ```{r}
+grad(mw,c(670, 310))
+grad(mw,c(580, 390))
+grad(mw,c(360, 460))
+```
+    + The gradient at `c(670, 310)` is zero because that location is a *local maximum*, i.e., the top of a hill. Note that it is not the highest point on the map, hence is called local.
