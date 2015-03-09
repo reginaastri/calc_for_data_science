@@ -19,10 +19,11 @@ local({
     function(vec){
       sn <- vec[1]
       ew <- vec[2]
-      if(sn < min(x) | sn > max(x) | ew < min(y) | ew > max(y))return(c(NA,NA))
+      if(isTRUE(sn < min(x) | sn > max(x) | ew < min(y) | ew > max(y)))return(c(NA,NA))
       # indices of the x and y coordinates just less than sn and ew, resp
       i1 <- sum(x <= sn)
       j1 <- sum(y <= ew)
+      if(is.na(i1) | is.na(j1))return(v)
       # Small box around these coordinates
       i <- max(1, i1-1):min(length(x), i1+1)
       j <- max(1, j1-1):min(length(y), j1+1)

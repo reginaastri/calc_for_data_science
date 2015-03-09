@@ -32,7 +32,7 @@ local({
   text(.25, 3.0, expression(over(d*f(x), d*x) %==% lim(over(f(x + Delta*x) - f(x), Delta*x), Delta*x %->% 0)), pos=4)
   })
 ```
-    + **Perhaps we should introduce grad here** and run through exercises which numerically demonstrate common derivatives such as $\frac{d}{dx}e^x=e^x$, $\frac{d}{dx}sin(x)=cos(x)$, $\frac{d}{dx}x^2=2x$ and so on. For example, `deriv_sin <- sapply(seq(0,2*pi, by=.1), function(x)grad(sin,x))` could be plotted and compared with a plot of `cos(x)`. That such relations can be shown analytically should be mentioned. Possibly one analytic derivation might be presented in a plotmath figure.
+    + **We should introduce grad here, rather than below** and run through exercises which numerically demonstrate common derivatives such as $\frac{d}{dx}e^x=e^x$, $\frac{d}{dx}sin(x)=cos(x)$, $\frac{d}{dx}x^2=2x$ and so on. For example, `deriv_sin <- sapply(seq(0,2*pi, by=.1), function(x)grad(sin,x))` could be plotted and compared with a plot of `cos(x)`. That such relations can be shown analytically should be mentioned. Possibly one analytic derivation might be presented in a plotmath figure.
 
 2. Gradients on Maunga Whau
     + The previous example involved a function, f(x), of one variable, x.
@@ -126,10 +126,37 @@ grad(mw,c(360, 460))
 ```
     + The gradient at `c(670, 310)` is zero because that location is a *local maximum*, i.e., the top of a hill. Note that it is not the highest point on the map, hence is called local.
 
-3. Gradient of a function of 3 variables.
-    + Planets, asteroids, comets, and other small bodies travel in approximately elliptical orbits around the sun. Their speed at any point in their orbit is determined by their mass, $m$, their distance, $r$, from the sun, the length, $a$ of their orbit's major axis, and the gravitational constant, $G.$
-    +
+3. Gradient ascent
+    + Ascend Maunga Whau by gradient ascent.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
+bg <- par("bg")
+par(bg="lightblue")
+res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Climbing Maunga Whau")
+par(bg=bg)
+plunk <- function(v, col="yellow"){
+  i <- ceiling(10e-10+v[1]/10)
+  j <- ceiling(10e-10+v[2]/10)
+  temp <- trans3d(x[i], y[j], z[i,j], res)
+  points(temp$x, temp$y, pch=19, cex=1.25, col=col)
+  c(x[i], y[j])
+}
+step <- function(v){
+  if(sum(is.na(mw(v))))return(v)
+  g <- grad(mw, v)
+  g <- 50*g/sqrt(sum(g^2))
+  v <- v + g
+  plunk(v)
+  v
+}
+# Choose a starting point and watch the hiker climb.
+# v <- c(520, 550) # might work as a starting point.
+# v <- c(800, 400) # also
+# v <- c(349.9812, 592.6295)
+```
+
+
+    ```{r fig.show='hold', fig.align='center', echo=FALSE, include=FALSE}
+# Decided to chuck this in favor of gradient ascent.
 mai <- par("mai")
 par(mai=adj_margins())
 plot(-1:1, -1:1, type='n', xlab='', ylab='', main="Elliptical Orbit", xaxt='n', yaxt='n', bty='n')
