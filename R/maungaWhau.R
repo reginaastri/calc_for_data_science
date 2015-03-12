@@ -23,10 +23,12 @@ local({
       # indices of the x and y coordinates just less than sn and ew, resp
       i1 <- sum(x <= sn)
       j1 <- sum(y <= ew)
-      if(is.na(i1) | is.na(j1))return(v)
+      if(isTRUE(i1 >= length(x) | j1 >= length(y)))return(c(NA, NA))
+      if(is.na(i1) | is.na(j1))return(vec)
+      if(isTRUE(all.equal(vec, c(x[i1], x[j1]))))return(z[i1, j1])
       # Small box around these coordinates
-      i <- max(1, i1-1):min(length(x), i1+1)
-      j <- max(1, j1-1):min(length(y), j1+1)
+      i <- max(1, i1):min(length(x), i1+1)
+      j <- max(1, j1):min(length(y), j1+1)
       # linear model of region
       ibox <- rep(i, each=length(j))
       jbox <- rep(j, length(i))

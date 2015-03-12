@@ -50,46 +50,46 @@ plot(0:1, 0:1, type='n', xlab="", ylab="", main="Partial Derivatives", xaxt='n',
 text(0, 0.8, expression(over(partialdiff*f(x,y), partialdiff*x) %==% lim(over(f(x + Delta*x, y) - f(x, y), Delta*x), Delta*x %->% 0)), pos=4, cex=1.5)
 text(0, 0.2, expression(over(partialdiff*f(x,y), partialdiff*y) %==% lim(over(f(x, y + Delta*y) - f(x, y), Delta*y), Delta*y %->% 0)), pos=4, cex=1.5)
 ```
-    + At a point on Maunga Whau, the partial derivatives represent slope in the x and y directions respectively. In the case pictured, the longer arrow represents slope in the x, or northward, direction. In this direction, the slope is clearly negative, or downhill. In the y, or westward, direction the slope is much less severe and is slightly uphill as the shorter arrow illustrates.  
+    + At a point on Maunga Whau, the partial derivatives represent slopes in the x and y directions. In the case pictured, the partial derivatives are indicated by the slopes of the lines labeled x and y.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 bg <- par("bg")
 par(bg="lightblue")
 res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Partial Derivatives")
 par(bg=bg)
-myx <- 89-16# 89-15
-myy <- 63-42 # 63-32
-myloc <- trans3d(x[myx], y[myy], z[myx, myy], res)
+i <- 89-23# 89-16
+j <- 63-18 # 63-32
+myloc <- trans3d(x[i], y[j], z[i, j], res)
 points(myloc$x, myloc$y, pch=19, cex=1.5, col="yellow")
-dfdx <- (z[myx+1, myy]-z[myx, myy])/10
-mydx <- trans3d(x[myx+5], y[myy], z[myx, myy] + dfdx*50, res)
-arrows(myloc$x, myloc$y, mydx$x, mydx$y, lwd=3, col="yellow")
-dfdy <- (z[myx, myy+1]-z[myx, myy])/10
-mydy <- trans3d(x[myx], y[myy+5], z[myx, myy] + dfdy*50, res)
-arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=3, col="yellow")
+# Create a line segment through v[1], v[2], z[i,j] in the x direction with appropriate slope.
+a <- trans3d(x[i+5], y[j], z[i+5, j], res)
+b <- trans3d(x[i-5], y[j], z[i-5, j], res)
+text(b$x, b$y, "x", cex=1.5, col="yellow", pos=4)
+segments(a$x, a$y, b$x, b$y, col="yellow", lwd=3)
+a <- trans3d(x[i], y[j+5], z[i, j+5], res)
+b <- trans3d(x[i], y[j-5], z[i, j-5], res)
+text(b$x, b$y, "y", cex=1.5, col="yellow", pos=2)
+segments(a$x, a$y, b$x, b$y, col="yellow", lwd=3)
+
 ```
-    + As illustrated in the figure, the *gradient* of a function is a vector of its partial deriviatives. It is usually symbolized by a nabla (upside down triangle.)
+    + The *gradient* of a function is a vector of its partial deriviatives. It is usually symbolized by a nabla (upside down triangle,) as illustrated in the figure.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 plot(0:1, 0:1, type='n', xlab="", ylab="", main="Gradient of f(x,y)", xaxt='n', yaxt='n', bty='n')
 text(.5, .5, expression(nabla*f(x, y) %==% bgroup("(",atop(over(partialdiff*f(x,y), partialdiff*x), over(partialdiff*f(x,y), partialdiff*y)),")")), cex=2)
 ```
-    + It can be shown that the gradient indicates the magnitude and direction of steepest incline. The gradient at that same point on Maunga Whau is shown here in pink.
+    + It can be shown that the gradient indicates the magnitude and direction of steepest ascent. The gradient at a point on Maunga Whau is shown here.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 bg <- par("bg")
 par(bg="lightblue")
 res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Gradient at a Point on Maunga Whau")
 par(bg=bg)
-myx <- 89-16# 89-15
-myy <- 63-42 # 63-32
-myloc <- trans3d(x[myx], y[myy], z[myx, myy], res)
 points(myloc$x, myloc$y, pch=19, cex=1.5, col="yellow")
-dfdx <- (z[myx+1, myy]-z[myx, myy])/10
-mydx <- trans3d(x[myx+5], y[myy], z[myx, myy] + dfdx*50, res)
-arrows(myloc$x, myloc$y, mydx$x, mydx$y, lwd=2, col="yellow")
-dfdy <- (z[myx, myy+1]-z[myx, myy])/10
-mydy <- trans3d(x[myx], y[myy+5], z[myx, myy] + dfdy*50, res)
-arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=2, col="yellow")
-grd <- trans3d(x[myx+5], y[myy+5], z[myx, myy] + (dfdx+dfdy)*50, res)
-arrows(myloc$x, myloc$y, grd$x, grd$y, lwd=4, col='pink')
+g <- grad(mw, c(x[i], y[j]))
+g <- 50*g/sqrt(sum(g^2))
+v <- g + c(x[i], y[j])
+i1 <- round(v[1]/10)
+j1 <- round(v[2]/10)
+tip <- trans3d(v[1], v[2], z[i1, j1], res)
+arrows(myloc$x, myloc$y, tip$x, tip$y, col="yellow", lwd=3)
 ```
     + Gradients can be estimated using the function, `grad`, in package numDiff.
     + It takes two arguments, a function and a point at which the gradient of the function is to be estimated.
