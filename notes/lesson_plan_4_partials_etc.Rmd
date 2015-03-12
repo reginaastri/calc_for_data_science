@@ -15,7 +15,7 @@ source("../R/utilities.R")
 source("../R/maungaWhau.R")
 ```
 
-1. The point of this unit is to introduce partial derivatives in a general setting.
+1. The point of this unit is to introduce derivatives and partial derivatives in a general setting, and to introduce numerical differentiation with `grad`.
     + Previously, we noted the simplest example of a derivative is the slope of a line.
     + We also noted that the closer you look at a smooth curve, the more it looks like a line. This allows us to assign a slope at any point on a smooth curve by taking a limit.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
@@ -28,7 +28,7 @@ local({
   slope <- (pi/2)*cos(pi*1.5/4)
   y2 <- y1 + slope
   points(1.5, y1, pch=19, col="blue", cex=2.0)
-  arrows(1.1, y1-.4*slope, 2.5, y2, lwd=3, col="blue")
+  segments(.5, y1-slope, 2.5, y2, lwd=3, col="blue")
   text(.25, 3.0, expression(over(d*f(x), d*x) %==% lim(over(f(x + Delta*x) - f(x), Delta*x), Delta*x %->% 0)), pos=4)
   })
 ```
@@ -71,7 +71,7 @@ text(b$x, b$y, "y", cex=1.5, col="yellow", pos=2)
 segments(a$x, a$y, b$x, b$y, col="yellow", lwd=3)
 
 ```
-    + The *gradient* of a function is a vector of its partial deriviatives. It is usually symbolized by a nabla (upside down triangle,) as illustrated in the figure.
+    + The *gradient* of a function of more than one variable is a vector of its partial deriviatives. It is usually symbolized by a nabla (upside down triangle,) as illustrated in the figure.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 plot(0:1, 0:1, type='n', xlab="", ylab="", main="Gradient of f(x,y)", xaxt='n', yaxt='n', bty='n')
 text(.5, .5, expression(nabla*f(x, y) %==% bgroup("(",atop(over(partialdiff*f(x,y), partialdiff*x), over(partialdiff*f(x,y), partialdiff*y)),")")), cex=2)
@@ -127,15 +127,16 @@ grad(mw,c(360, 460))
     + The gradient at `c(670, 310)` is zero because that location is a *local maximum*, i.e., the top of a hill. Note that it is not the highest point on the map, hence is called local.
 
 3. Gradient ascent
-    + Ascend Maunga Whau by gradient ascent.
+    + Ascend Maunga Whau by gradient ascent. The climber goes 50 meters in the gradient, are steepest ascent, direction.
+    + This could be a demo or an interactive question where the user gets to guess which of 3 starting points will ascend to the rim of the volcano.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 bg <- par("bg")
 par(bg="lightblue")
 res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Climbing Maunga Whau")
 par(bg=bg)
 plunk <- function(v, col="yellow"){
-  i <- ceiling(10e-10+v[1]/10)
-  j <- ceiling(10e-10+v[2]/10)
+  i <- ceiling(1e-10+v[1]/10)
+  j <- ceiling(1e-10+v[2]/10)
   temp <- trans3d(x[i], y[j], z[i,j], res)
   points(temp$x, temp$y, pch=19, cex=1.25, col=col)
   c(x[i], y[j])
@@ -143,13 +144,27 @@ plunk <- function(v, col="yellow"){
 step <- function(v){
   if(sum(is.na(mw(v))))return(v)
   g <- grad(mw, v)
-  g <- 50*g/sqrt(sum(g^2))
+  gnorm <- sqrt(sum(g^2))
+  if(gnorm > 0)g <- 50*g/gnorm
   v <- v + g
   plunk(v)
   v
 }
-# Choose a starting point and watch the hiker climb.
-# v <- c(520, 550) # might work as a starting point.
-# v <- c(800, 400) # also
-# v <- c(349.9812, 592.6295)
+# Choose a starting point and watch the hiker climb. These do vaguely interesting things:
+# Run as real time "movies", they are cute. 
+# v <- c(520, 550) 
+# v <- c(800, 400)
+# v <- c(560, 520)
+
+ascend <- function(v, steps=10){
+  plunk(v, col="orange")
+  for(i in 1:10){
+    Sys.sleep(0.25)
+    v <- step(v)
+  }
+}
+
+ascend(c(520, 550))
+ascend(c(800, 400))
+ascend(c(560, 520))
 ```
