@@ -32,7 +32,7 @@ local({
   text(.25, 3.0, expression(over(d*f(x), d*x) %==% lim(over(f(x + Delta*x) - f(x), Delta*x), Delta*x %->% 0)), pos=4)
   })
 ```
-    + **Perhaps we should introduce grad here** and run through exercises which numerically demonstrate common derivatives such as $\frac{d}{dx}e^x=e^x$, $\frac{d}{dx}sin(x)=cos(x)$, $\frac{d}{dx}x^2=2x$ and so on. For example, `deriv_sin <- sapply(seq(0,2*pi, by=.1), function(x)grad(sin,x))` could be plotted and compared with a plot of `cos(x)`. That such relations can be shown analytically should be mentioned. Possibly one analytic derivation might be presented in a plotmath figure.
+    + **We should introduce grad here, rather than below** and run through exercises which numerically demonstrate common derivatives such as $\frac{d}{dx}e^x=e^x$, $\frac{d}{dx}sin(x)=cos(x)$, $\frac{d}{dx}x^2=2x$ and so on. For example, `deriv_sin <- sapply(seq(0,2*pi, by=.1), function(x)grad(sin,x))` could be plotted and compared with a plot of `cos(x)`. That such relations can be shown analytically should be mentioned. Possibly one analytic derivation might be presented in a plotmath figure.
 
 2. Gradients on Maunga Whau
     + The previous example involved a function, f(x), of one variable, x.
@@ -50,46 +50,46 @@ plot(0:1, 0:1, type='n', xlab="", ylab="", main="Partial Derivatives", xaxt='n',
 text(0, 0.8, expression(over(partialdiff*f(x,y), partialdiff*x) %==% lim(over(f(x + Delta*x, y) - f(x, y), Delta*x), Delta*x %->% 0)), pos=4, cex=1.5)
 text(0, 0.2, expression(over(partialdiff*f(x,y), partialdiff*y) %==% lim(over(f(x, y + Delta*y) - f(x, y), Delta*y), Delta*y %->% 0)), pos=4, cex=1.5)
 ```
-    + At a point on Maunga Whau, the partial derivatives represent slope in the x and y directions respectively. In the case pictured, the longer arrow represents slope in the x, or northward, direction. In this direction, the slope is clearly negative, or downhill. In the y, or westward, direction the slope is much less severe and is slightly uphill as the shorter arrow illustrates.  
+    + At a point on Maunga Whau, the partial derivatives represent slopes in the x and y directions. In the case pictured, the partial derivatives are indicated by the slopes of the lines labeled x and y.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 bg <- par("bg")
 par(bg="lightblue")
 res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Partial Derivatives")
 par(bg=bg)
-myx <- 89-16# 89-15
-myy <- 63-42 # 63-32
-myloc <- trans3d(x[myx], y[myy], z[myx, myy], res)
+i <- 89-23# 89-16
+j <- 63-18 # 63-32
+myloc <- trans3d(x[i], y[j], z[i, j], res)
 points(myloc$x, myloc$y, pch=19, cex=1.5, col="yellow")
-dfdx <- (z[myx+1, myy]-z[myx, myy])/10
-mydx <- trans3d(x[myx+5], y[myy], z[myx, myy] + dfdx*50, res)
-arrows(myloc$x, myloc$y, mydx$x, mydx$y, lwd=3, col="yellow")
-dfdy <- (z[myx, myy+1]-z[myx, myy])/10
-mydy <- trans3d(x[myx], y[myy+5], z[myx, myy] + dfdy*50, res)
-arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=3, col="yellow")
+# Create a line segment through v[1], v[2], z[i,j] in the x direction with appropriate slope.
+a <- trans3d(x[i+5], y[j], z[i+5, j], res)
+b <- trans3d(x[i-5], y[j], z[i-5, j], res)
+text(b$x, b$y, "x", cex=1.5, col="yellow", pos=4)
+segments(a$x, a$y, b$x, b$y, col="yellow", lwd=3)
+a <- trans3d(x[i], y[j+5], z[i, j+5], res)
+b <- trans3d(x[i], y[j-5], z[i, j-5], res)
+text(b$x, b$y, "y", cex=1.5, col="yellow", pos=2)
+segments(a$x, a$y, b$x, b$y, col="yellow", lwd=3)
+
 ```
-    + As illustrated in the figure, the *gradient* of a function is a vector of its partial deriviatives. It is usually symbolized by a nabla (upside down triangle.)
+    + The *gradient* of a function is a vector of its partial deriviatives. It is usually symbolized by a nabla (upside down triangle,) as illustrated in the figure.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 plot(0:1, 0:1, type='n', xlab="", ylab="", main="Gradient of f(x,y)", xaxt='n', yaxt='n', bty='n')
 text(.5, .5, expression(nabla*f(x, y) %==% bgroup("(",atop(over(partialdiff*f(x,y), partialdiff*x), over(partialdiff*f(x,y), partialdiff*y)),")")), cex=2)
 ```
-    + It can be shown that the gradient indicates the magnitude and direction of steepest incline. The gradient at that same point on Maunga Whau is shown here in pink.
+    + It can be shown that the gradient indicates the magnitude and direction of steepest ascent. The gradient at a point on Maunga Whau is shown here.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
 bg <- par("bg")
 par(bg="lightblue")
 res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Gradient at a Point on Maunga Whau")
 par(bg=bg)
-myx <- 89-16# 89-15
-myy <- 63-42 # 63-32
-myloc <- trans3d(x[myx], y[myy], z[myx, myy], res)
 points(myloc$x, myloc$y, pch=19, cex=1.5, col="yellow")
-dfdx <- (z[myx+1, myy]-z[myx, myy])/10
-mydx <- trans3d(x[myx+5], y[myy], z[myx, myy] + dfdx*50, res)
-arrows(myloc$x, myloc$y, mydx$x, mydx$y, lwd=2, col="yellow")
-dfdy <- (z[myx, myy+1]-z[myx, myy])/10
-mydy <- trans3d(x[myx], y[myy+5], z[myx, myy] + dfdy*50, res)
-arrows(myloc$x, myloc$y, mydy$x, mydy$y, lwd=2, col="yellow")
-grd <- trans3d(x[myx+5], y[myy+5], z[myx, myy] + (dfdx+dfdy)*50, res)
-arrows(myloc$x, myloc$y, grd$x, grd$y, lwd=4, col='pink')
+g <- grad(mw, c(x[i], y[j]))
+g <- 50*g/sqrt(sum(g^2))
+v <- g + c(x[i], y[j])
+i1 <- round(v[1]/10)
+j1 <- round(v[2]/10)
+tip <- trans3d(v[1], v[2], z[i1, j1], res)
+arrows(myloc$x, myloc$y, tip$x, tip$y, col="yellow", lwd=3)
 ```
     + Gradients can be estimated using the function, `grad`, in package numDiff.
     + It takes two arguments, a function and a point at which the gradient of the function is to be estimated.
@@ -126,32 +126,30 @@ grad(mw,c(360, 460))
 ```
     + The gradient at `c(670, 310)` is zero because that location is a *local maximum*, i.e., the top of a hill. Note that it is not the highest point on the map, hence is called local.
 
-3. Gradient of a function of 3 variables.
-    + Planets, asteroids, comets, and other small bodies travel in approximately elliptical orbits around the sun. Their speed at any point in their orbit is determined by their mass, $m$, their distance, $r$, from the sun, the length, $a$ of their orbit's major axis, and the gravitational constant, $G.$
-    +
+3. Gradient ascent
+    + Ascend Maunga Whau by gradient ascent.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
-mai <- par("mai")
-par(mai=adj_margins())
-plot(-1:1, -1:1, type='n', xlab='', ylab='', main="Elliptical Orbit", xaxt='n', yaxt='n', bty='n')
-par(mai=mai)
-rect(-1,-1,1,1,col="black")
-orb <- ellipse(.38, matrix(c(2, 0, 0, 1), 2, 2))
-polygon(orb, border="lightblue", lwd=3)
-segments(-.77, 0, .77, 0, lty=2, lwd=2, col="lightblue")
-text(0,0,"a", pos=1, cex=1.2, col="white")
-sun <- ellipse(.15)
-sunoffset <- .45
-sun[,1] <- sun[,1] + sunoffset
-planet <- ellipse(.04)
-planet[,1] <- planet[,1]+orb[20,1]
-planet[,2] <- planet[,2]+orb[20,2]
-segments(orb[20,1], orb[20,2], sunoffset, 0, lty=2, lwd=2, col="lightblue")
-text(mean(c(orb[20,1], sunoffset)), mean(c(orb[20,2], 0)), "r", pos=3, cex=1.2, col="white")
-polygon(sun, border='red', col='yellow', lwd=6)
-polygon(planet, border="skyblue", col="seagreen",lwd=3)
-font <- par("font")
-par(font=2)
-text(-.8, .65, expression(v == sqrt(m*G*bgroup("(",over(2,r)-over(1,a),")"))), col="white", pos=4, cex=1.2)
-par(font=font)
-# G <- 6.673e−11 # N·(m/kg)^2 
+bg <- par("bg")
+par(bg="lightblue")
+res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, box=FALSE, main="Climbing Maunga Whau")
+par(bg=bg)
+plunk <- function(v, col="yellow"){
+  i <- ceiling(10e-10+v[1]/10)
+  j <- ceiling(10e-10+v[2]/10)
+  temp <- trans3d(x[i], y[j], z[i,j], res)
+  points(temp$x, temp$y, pch=19, cex=1.25, col=col)
+  c(x[i], y[j])
+}
+step <- function(v){
+  if(sum(is.na(mw(v))))return(v)
+  g <- grad(mw, v)
+  g <- 50*g/sqrt(sum(g^2))
+  v <- v + g
+  plunk(v)
+  v
+}
+# Choose a starting point and watch the hiker climb.
+# v <- c(520, 550) # might work as a starting point.
+# v <- c(800, 400) # also
+# v <- c(349.9812, 592.6295)
 ```
