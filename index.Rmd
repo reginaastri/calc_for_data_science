@@ -15,3 +15,4 @@ The proposed aim is to teach just enough calculus and (finite dimensional) linea
 1. [Calculus and Linear Algebra--What are they good for?](notes/lesson_plan_1_what_are_they_good_for.html)--a bird's eye view of the topics and an example of application to tsunami forecasting.
 2. [Lines, Curves, Tangents, Distance, Length, and Area](notes/lesson_plan_2_lines_curves_etc.html)--Visual introduction to the general ideas using plane curves and figures.
 3. [Translations, Rotations, and Scaling](notes/lesson_plan_3_translations_rotations_etc.html)
+4. [Derivatives and Partial Derivatives with grad](notes/lesson_plan_4_partials_etc.html)
