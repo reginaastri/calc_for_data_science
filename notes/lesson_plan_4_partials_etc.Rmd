@@ -1,5 +1,5 @@
 ---
-title: "Partial Derivatives"
+title: "Derivatives and Partial Derivatives with grad"
 author: "W. Bauer"
 date: "03/03/2015"
 output: html_document
@@ -12,7 +12,6 @@ if(!require(numDeriv)){
   library(numDeriv)
   }
 source("../R/utilities.R")
-source("../R/maungaWhau.R")
 ```
 
 1. The point of this unit is to introduce derivatives and partial derivatives in a general setting, and to introduce numerical differentiation with `grad`.
@@ -32,12 +31,40 @@ local({
   text(.25, 3.0, expression(over(d*f(x), d*x) %==% lim(over(f(x + Delta*x) - f(x), Delta*x), Delta*x %->% 0)), pos=4)
   })
 ```
-    + **We should introduce grad here, rather than below** and run through exercises which numerically demonstrate common derivatives such as $\frac{d}{dx}e^x=e^x$, $\frac{d}{dx}sin(x)=cos(x)$, $\frac{d}{dx}x^2=2x$ and so on. For example, `deriv_sin <- sapply(seq(0,2*pi, by=.1), function(x)grad(sin,x))` could be plotted and compared with a plot of `cos(x)`. That such relations can be shown analytically should be mentioned. Possibly one analytic derivation might be presented in a plotmath figure.
 
-2. Gradients on Maunga Whau
-    + The previous example involved a function, f(x), of one variable, x.
+2. Numerical derivatives with `grad`
+    + Derivatives of many functions can be found analytically. The figure shows how to find the derivative of $x^2$ using only the definition and elementary algebra.
+    ```{r fig.show='hold', fig.align='center', echo=FALSE}
+plot(0:1, 0:1, type='n', xlab="", ylab="", xaxt="n", yaxt="n", bty="n", main=expression(paste("The analytic derivation of ", over(d*x^2,d*x))))
+cr <- .2
+text(0, .9, expression(over(d*x^2,d*x) %==% lim(over((x+Delta*x)^2-x^2, Delta*x), Delta*x %->% 0)), pos=4)
+text(0, .9-cr, expression(paste(over(d*x^2,d*x) == lim(over(x^2+2*x*Delta*x + Delta*x^2-x^2, Delta*x), Delta*x %->% 0), "    ( expanding ", (x+Delta*x)^2, " )")), pos=4)
+text(0, .9-2*cr, expression(paste(over(d*x^2,d*x) == lim(over(2*x*Delta*x + Delta*x^2, Delta*x), Delta*x %->% 0),"  ( cancelling ", x^2 - x^2, " )")), pos=4)
+text(0, .9-3*cr, expression(paste(over(d*x^2,d*x) == lim(2*x + Delta*x, Delta*x %->% 0), "    ( dividing out ", Delta*x, " )")), pos=4)
+text(0, .9-4*cr, expression(over(d*x^2, d*x) == 2*x.), pos=4)
+```
+    + Here, however, we will focus on estimating derivatives numerically, using the function, `grad`, in package numDiff. (The name is a short form of "gradient," a term which will be explained later.)
+    + `grad` takes two arguments, a function and a point at which the derivative of the function is to be estimated.
+    + For instance `grad(function(x)x^2, 1)` will estmate the derivative of `x^2` at x=1. You know from the analytic derivation that this should be 2.
+    + In the example, grad's first argument, `function(x)x^2` is an R function which takes one numerical argument and returns the value `x^2` at the point `x` represented by that argument.
+    + Using common functions such as cos, sin, exp, log, 1/x, have students compare their numerical and analytic derivatives. The follow code illustrates how that might be done. Note that `grad` is vectorized for functions of 1 variable but has nothing analogous for functions of several. I think that is confusing, but vectorization comes in handy here.
+    ```{r fig.show='hold', fig.align='center'}
+# Show that the derivative of sin is cos.
+x <- seq(0, 2*pi, by=.2)
+# swirl does this
+plot(x, cos(x), type='l', lwd=2, xlab="x", ylab="sin(x)", main=expression(over(d, d*x)~~sin(x) == cos(x)))
+abline(h=0)
+legend('bottomleft', "cos(x)", lwd=2, cex=1.5)
+legend('bottomright', expression(over(d, d*x)~~sin(x)), pch=19, col="blue", cex=1.5)
+# student does this
+deriv <- grad(sin, x)
+points(x, deriv, pch=19, col="blue", cex=1.5)
+```
+
+3. Gradients on Maunga Whau
     + In general, we may have functions of several variables, such as this topographic map of Maunga Whau volcano. Here f(x, y) is altitude, x is northward distance from a reference point, and y is westward distance from the reference point.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
+  source("../R/maungaWhau.R")
   bg <- par("bg")
   par(bg = "lightblue")
   res <- persp(x, y, z, theta = 120, phi = 15, col = fill, scale = FALSE, xlab="x (South to North)", ylab="y (East to West)", zlab = "f(x, y)")
@@ -91,11 +118,9 @@ j1 <- round(v[2]/10)
 tip <- trans3d(v[1], v[2], z[i1, j1], res)
 arrows(myloc$x, myloc$y, tip$x, tip$y, col="yellow", lwd=3)
 ```
-    + Gradients can be estimated using the function, `grad`, in package numDiff.
-    + It takes two arguments, a function and a point at which the gradient of the function is to be estimated.
-    + So grad is a function of another function and a point.
-    + The point must be represented by a vector.
-    + The function, grad's first argument, is an R function which takes a vector argument and returns the value at the point represented by the vector.
+    + Like derivatives, gradients can be estimated using the function, `grad`, in package numDiff.
+    + As before, `grad` takes two arguments, a function and a point at which the gradient of the function is to be estimated. But in this case, the "point" is a vector.
+    + If the function depends on two variables, the vector has length two, if three length three, and so on.
     + We've written `mw(point)` which gives the altitude of Maunga Whau as a function of point coordinates. (Actually it gives twice the altitude, since that's the way z is calibrated.)
     + Illustrate the use of `mw` by finding the altitude at the pictured points.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
@@ -126,7 +151,7 @@ grad(mw,c(360, 460))
 ```
     + The gradient at `c(670, 310)` is zero because that location is a *local maximum*, i.e., the top of a hill. Note that it is not the highest point on the map, hence is called local.
 
-3. Gradient ascent
+4. Gradient ascent
     + Ascend Maunga Whau by gradient ascent. The climber goes 50 meters in the gradient, are steepest ascent, direction.
     + This could be a demo or an interactive question where the user gets to guess which of 3 starting points will ascend to the rim of the volcano.
     ```{r fig.show='hold', fig.align='center', echo=FALSE}
